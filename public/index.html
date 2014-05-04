@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>HardOrange IRC</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/foundation.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="js/vendor/modernizr.js"></script>
+</head>
+<body>
+  <div class="off-canvas-wrap full-height" data-offcanvas>
+    <div class="inner-wrap full-height">
+      <nav class="tab-bar">
+        <section class="left-small">
+          <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+        </section>
+        <section class="middle tab-bar-section">
+          <h1 class="title">HardOrange IRC</h1>
+        </section>
+        <section class="right-small">
+          <a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
+        </section>
+      </nav>
+      <aside class="left-off-canvas-menu">
+        <ul class="off-canvas-list">
+          <li><label>Nickname</label></li>
+          <li><a href="#" class="footer" id="nickname"></a></li>
+          <li><label>Chat Rooms</label></li>
+          <li><a href="#" class="footer">Main Server</a></li>
+          <li><label>Private Messages</label></li>
+          <li><a href="#" class="footer">Chris</a></li>
+          <li><a href="#" class="footer">Joe</a></li>
+          <li><label>Powered by</label></li>
+          <li><a href="http://nodejs.org/" target="_blank" class="footer">Node.js</a></li>
+          <li><a href="http://socket.io/" target="_blank" class="footer">Socket.io</a></li>
+          <li><a href="http://expressjs.com/" target="_blank" class="footer">Express</a></li>
+          <li><a href="http://eightmedia.github.io/hammer.js/" target="_blank" class="footer">Hammer</a></li>
+          <li><a href="http://foundation.zurb.com/" target="_blank" class="footer">Foundation</a></li>
+          <li><label>Built By</label></li>
+          <li><a href="http://hardorange.org/" target="_blank" class="footer">&copy;2014 HardOrange</a></li>
+        </ul>
+      </aside>
+      <aside class="right-off-canvas-menu">
+        <ul class="off-canvas-list" id="usersList">
+          <li><label>Users</label></li>
+        </ul>
+      </aside>
+      <section class="main-section">
+        <br>
+        <div class="row">
+          <div class="large-12 columns">
+            <div id="alertZone" class="hide">
+              <div data-alert class="alert-box secondary" id="messageAlert">
+                Please type a message or command.
+                <a href="#" class="close">&times;</a>
+              </div>
+            </div>
+            <div id="chatLog" class="chatLog"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-12 columns">
+            <input type="text" class="chatBox" onKeyUp="checkInput()" id="chatBox" placeholder="Type a message..." maxlength="100">
+          </div>
+        </div>
+      </section>
+      <a class="exit-off-canvas"></a>
+    </div>
+  </div>
+  <script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation.min.js"></script>
+  <script src="js/hammer.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/hammerConfig.js"></script>
+</body>
+</html>

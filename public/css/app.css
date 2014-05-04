@@ -1,0 +1,53 @@
+body {
+	background: #FAFAFA;
+}
+
+.row {
+	max-width: none;
+}
+
+.full-height {
+	height:100%;
+}
+
+.serverMessage {
+	font-weight: bold;
+	font-style: italic;
+}
+
+a {
+	color: orange;
+}
+
+.chatLog {
+	resize: none;
+	height: 500px;
+	font-size: 12pt;
+	line-height: 16pt;
+	border: 1px solid #cccccc;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+	margin: 0 0 0.5rem 0;
+	padding: 1rem;
+	background: white;
+	overflow: auto;
+	background: #333333;
+	color:green;
+}
+
+.chatBox {
+	height: 50px;
+	max-height: 200px;
+	max-width: 100%;
+	font-size: 14pt;
+}
+
+.nameBox {
+	height: 50px;
+	max-height: 200px;
+	max-width: 100%;
+	font-size: 14pt;
+}
+
+.footer {
+	font-size: 10pt;
+}
