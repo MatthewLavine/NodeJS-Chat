@@ -62,7 +62,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function sendHelp(){
-    var help = "<span class='serverMessage'>HardOrange IRC Help - Commands:<br>/nick {nick}<br>/clear<br>/disconnect<br>/help</span>";
+    var help = "<span class='serverMessage'>HardOrange IRC Help - Commands:<br>/nick #nick<br>/clear<br>/disconnect<br>/help</span>";
     socket.emit('annouce', {message : help});
   }
 
