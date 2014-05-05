@@ -58,7 +58,7 @@ function chat(source, data) {
       <div class="large-1 columns show-for-large-up"> \
         <div class="chatTime full-height">' + '[' + time + ']' + '</div> \
       </div> \
-      <div class="small-3 medium-2 large-2 columns"> \
+      <div class="small-3 medium-2 large-2 columns right-seperator"> \
          <div class="chatName full-height">' + source + '</div> \
       </div> \
       <div class="small-9 medium-10 large-9 columns"> \
@@ -66,6 +66,9 @@ function chat(source, data) {
       </div> \
     </div> \
     ');
+  var height = $('.chatMessage').last().height();
+  $('.chatName').last().css( {"height" : height});
+  $('.chatTime').last().css( {"height" : height});
   $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
   if(!isActive){
     var alert = new Audio('sounds/alert.mp3');

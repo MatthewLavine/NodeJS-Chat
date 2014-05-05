@@ -18,7 +18,7 @@ body {
 .adminMessage {
 	font-weight: bold;
 	font-style: italic;
-	color: orange;
+	color: #FF0500;
 }
 
 a {
@@ -37,6 +37,10 @@ a {
 	color:green;
 }
 
+.chatLog > div:nth-child(odd) {
+	background: #383838;
+}
+
 .error {
 	border: 2px solid red !important;
 }
@@ -53,7 +57,10 @@ a {
 .chatName {
 	text-align: right;
 	overflow:hidden;
+}
 
+.right-seperator {
+	border-right: 1px green solid;
 }
 
 .chatMessage {
