@@ -5,6 +5,7 @@ var express = require('express');
 var app = express();
 var server = app.listen(port);
 var ejs = require('ejs');
+var bbcode = require('bbcode');
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
 
@@ -50,6 +51,21 @@ io.sockets.on('connection', function (socket) {
 
     unrecognized(res[0]);
     sendHelp();
+  }
+
+  var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+  };
+
+  function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+      return entityMap[s];
+    });
   }
 
   function removeItem(arr, item) {
@@ -105,7 +121,9 @@ io.sockets.on('connection', function (socket) {
     if(data.message[0] == "/") {
       parseServerCommand(data);
     } else {
-      io.sockets.emit('broadcast', {client : name, message : data.message});
+      bbcode.parse(escapeHtml(data.message), function(content){
+        io.sockets.emit('broadcast', {client : name, message : content});        
+      });
     }
   });
 

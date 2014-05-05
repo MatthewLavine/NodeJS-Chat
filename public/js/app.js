@@ -33,21 +33,6 @@ function checkInput(){
   }
 }
 
-var entityMap = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': '&quot;',
-    "'": '&#39;',
-    "/": '&#x2F;'
-  };
-
-  function escapeHtml(string) {
-    return String(string).replace(/[&<>"'\/]/g, function (s) {
-      return entityMap[s];
-    });
-  }
-
 function makeFancy(str){
   var tempStr = str;
     while(tempStr.indexOf("*") !== -1) {
@@ -118,7 +103,7 @@ function updateName(data){
 }
 
 socket.on('broadcast', function (data) {
-  chat(data.client + ": " + escapeHtml(data.message));
+  chat(data.client + ": " + data.message);
 });
 
 socket.on('annouce', function (data) {
