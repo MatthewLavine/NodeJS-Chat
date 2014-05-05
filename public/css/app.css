@@ -27,7 +27,7 @@ a {
 
 .chatLog {
 	resize: none;
-	height: 600px;
+	height: 500px;
 	font-size: 12pt;
 	line-height: 16pt;
 	border: 1px solid #cccccc;

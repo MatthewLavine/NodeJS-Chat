@@ -56,8 +56,12 @@ io.sockets.on('connection', function (socket) {
   }
 
   function updateName(data){
-    if(users.indexOf(data) != -1 || data.toLowerCase() == "admin"){
+    if(users.indexOf(data) != -1){
       socket.emit('annouce', {message : "<span class='serverMessage'>That nick is taken!</span>"});
+      return;
+    }
+    if(data.toLowerCase() == "admin"){
+      socket.emit('annouce', {message : "<span class='serverMessage'>You cannot become an admin!</span>"});
       return;
     }
     oldName = name;
