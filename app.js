@@ -12,6 +12,12 @@ io.set('log level', 1);
 app.set("view options", {layout: false});
 app.use(express.static(__dirname + '/public'));
 
+process.on('SIGINT', function() {
+  console.log( "\nShutting down from manual SIGINT (Ctrl-C)." );
+  io.sockets.emit('annouce', {message : '<span class="adminMessage">SERVER GOING OFFLINE!</span>'});
+  process.exit();
+})
+
 app.get('*', function(req, res) {
     res.render('index.ejs', {
     	ip: ip
