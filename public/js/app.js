@@ -52,8 +52,12 @@ function makeFancy(str){
 }
 
 function chat(data) {
+  var D = new Date();
+  var hours = D.getHours();
+  var minutes = D.getMinutes();
+  var time = hours + ":" + minutes;
   var data = makeFancy(data);
-  $(chatLog).append(data + '<br>');
+  $(chatLog).append('[' + time + '] ' + data + '<br>');
   $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
   if(!isActive){
     var alert = new Audio('sounds/alert.mp3');

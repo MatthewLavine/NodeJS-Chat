@@ -14,7 +14,12 @@ app.get('/', function(req, res) {
 
 var users = [];
 
-
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
+ 
+process.stdin.on('data', function (chunk) {
+ io.sockets.emit('annouce', {message : '<span class="adminMessage">ADMIN: ' + chunk + '</span>'});
+});
 
 io.sockets.on('connection', function (socket) {
   function broadcast(data) {
@@ -51,7 +56,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function updateName(data){
-    if(users.indexOf(data) != -1){
+    if(users.indexOf(data) != -1 || data.toLowerCase() == "admin"){
       socket.emit('annouce', {message : "<span class='serverMessage'>That nick is taken!</span>"});
       return;
     }
@@ -62,7 +67,6 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('users', users);
     socket.emit('name', {name : name});
     broadcast('<span class="serverMessage">' + oldName + ' has changed name to ' + data + '.</span>');
-    console.log(users);
   }
 
   function disconnect(data){

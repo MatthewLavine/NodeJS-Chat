@@ -15,20 +15,25 @@ body {
 	font-style: italic;
 }
 
+.adminMessage {
+	font-weight: bold;
+	font-style: italic;
+	color: orangetest;
+}
+
 a {
 	color: orange;
 }
 
 .chatLog {
 	resize: none;
-	height: 500px;
+	height: 600px;
 	font-size: 12pt;
 	line-height: 16pt;
 	border: 1px solid #cccccc;
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 	margin: 0 0 0.5rem 0;
 	padding: 1rem;
-	background: white;
 	overflow: auto;
 	background: #333333;
 	color:green;
