@@ -1,6 +1,10 @@
+var ip = "127.0.0.1";
+var port = "3000";
+
 var express = require('express');
 var app = express();
-var server = app.listen(3000);
+var server = app.listen(port);
+var ejs = require('ejs');
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
 
@@ -8,8 +12,9 @@ app.set("view options", {layout: false});
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
-    res.render('index.html');
-    console.log("Page sent");
+    res.render('index.ejs', {
+    	ip: ip
+        });
 });
 
 var users = [];

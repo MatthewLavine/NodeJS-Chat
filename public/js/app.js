@@ -1,7 +1,7 @@
 $(document).foundation();
 
 var users = [];
-var socket = io.connect('http://10.200.137.3/');
+var socket = io.connect('http://' + ip);
 var isActive = true;
 
 window.onfocus = function () { 
