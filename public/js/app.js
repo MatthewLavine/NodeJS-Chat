@@ -15,9 +15,7 @@ function updateContainer() {
     $('.chatLog').css({
         height: $(window).height() - 125
     });
-  $('#chatMessage').scrollTop($('#chatMessage')[0].scrollHeight);
-  $('#chatTime').scrollTop($('#chatMessage')[0].scrollHeight);
-  $('#chatName').scrollTop($('#chatMessage')[0].scrollHeight);
+  $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
 }
 
 window.onfocus = function () { 
@@ -55,19 +53,20 @@ function makeFancy(str){
 function chat(source, data) {
   var time = moment().format('HH:mm');
   var data = makeFancy(data);
-  var lines = data.split('<br>').length;
-  $('#chatMessage').append(data  + '<br>');
-  $('#chatTime').append('[' + time + ']');
-  for(var i=0;i<lines;i++){
-    $('#chatTime').append('<br>');
-  }
-  $('#chatName').append(source);
-  for(var i=0;i<lines;i++){
-    $('#chatName').append('<br>');
-  }
-  $('#chatMessage').scrollTop($('#chatMessage')[0].scrollHeight);
-  $('#chatTime').scrollTop($('#chatMessage')[0].scrollHeight);
-  $('#chatName').scrollTop($('#chatMessage')[0].scrollHeight);
+  $('#chatLog').append(' \
+    <div class="row"> \
+      <div class="large-1 columns show-for-large-up"> \
+        <div class="chatTime full-height">' + '[' + time + ']' + '</div> \
+      </div> \
+      <div class="small-3 medium-2 large-2 columns"> \
+         <div class="chatName full-height">' + source + '</div> \
+      </div> \
+      <div class="small-9 medium-10 large-9 columns"> \
+        <div class="chatMessage full-height">' + data + '</div> \
+      </div> \
+    </div> \
+    ');
+  $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
   if(!isActive){
     var alert = new Audio('sounds/alert.mp3');
     alert.play();
@@ -76,9 +75,7 @@ function chat(source, data) {
 }
 
 function clearLog(){
-  $('#chatMessage').html('');
-  $('#chatTime').html('');
-  $('#chatName').html('');
+  $('#chatLog').html('');
 }
 
 function updateUsers(data) {
