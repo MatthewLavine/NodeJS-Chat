@@ -49,14 +49,25 @@ function makeFancy(str){
     return tempStr;
 }
 
-function chat(data) {
+function chat(source, data) {
   var D = new Date();
   var hours = D.getHours();
   var minutes = D.getMinutes();
   var time = hours + ":" + minutes;
   var data = makeFancy(data);
-  $(chatLog).append('[' + time + '] ' + data + '<br>');
-  $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+  var lines = data.split('<br>').length;
+  $('#chatMessage').append(data  + '<br>');
+  $('#chatTime').append('[ ' + time + ' ]');
+  for(var i=0;i<lines;i++){
+    $('#chatTime').append('<br>');
+  }
+  $('#chatName').append(source);
+  for(var i=0;i<lines;i++){
+    $('#chatName').append('<br>');
+  }
+  $('#chatMessage').scrollTop($('#chatMessage')[0].scrollHeight);
+  $('#chatTime').scrollTop($('#chatMessage')[0].scrollHeight);
+  $('#chatName').scrollTop($('#chatMessage')[0].scrollHeight);
   if(!isActive){
     var alert = new Audio('sounds/alert.mp3');
     alert.play();
@@ -65,7 +76,9 @@ function chat(data) {
 }
 
 function clearLog(){
-  $('#chatLog').html('');
+  $('#chatMessage').html('');
+  $('#chatTime').html('');
+  $('#chatName').html('');
 }
 
 function updateUsers(data) {
@@ -103,11 +116,11 @@ function updateName(data){
 }
 
 socket.on('broadcast', function (data) {
-  chat(data.client + ": " + data.message);
+  chat(data.client, data.message);
 });
 
 socket.on('annouce', function (data) {
-  chat(data.message);
+  chat('SERVER', data.message);
 });
 
 socket.on('users', function (data) {
