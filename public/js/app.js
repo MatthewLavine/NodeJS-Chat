@@ -50,10 +50,7 @@ function makeFancy(str){
 }
 
 function chat(source, data) {
-  var D = new Date();
-  var hours = D.getHours();
-  var minutes = D.getMinutes();
-  var time = hours + ":" + minutes;
+  var time = moment().format('HH:mm');
   var data = makeFancy(data);
   var lines = data.split('<br>').length;
   $('#chatMessage').append(data  + '<br>');
