@@ -15,6 +15,9 @@ function updateContainer() {
     $('.chatLog').css({
         height: $(window).height() - 125
     });
+  $('#chatMessage').scrollTop($('#chatMessage')[0].scrollHeight);
+  $('#chatTime').scrollTop($('#chatMessage')[0].scrollHeight);
+  $('#chatName').scrollTop($('#chatMessage')[0].scrollHeight);
 }
 
 window.onfocus = function () { 
