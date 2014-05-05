@@ -81,8 +81,8 @@ io.sockets.on('connection', function (socket) {
       socket.emit('annouce', {message : "<span class='serverMessage'>That nick is taken!</span>"});
       return;
     }
-    if(data.toLowerCase() == "admin"){
-      socket.emit('annouce', {message : "<span class='serverMessage'>You cannot become an admin!</span>"});
+    if(data.toLowerCase() == "admin" || data.toLowerCase() == "server"){
+      socket.emit('annouce', {message : "<span class='serverMessage'>That nick is reserved!</span>"});
       return;
     }
     oldName = name;
