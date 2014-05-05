@@ -33,18 +33,18 @@ io.sockets.on('connection', function (socket) {
   }
 
   function parseServerCommand(data) {
-    res = data.message.split(" ");
+    var res = data.message.split(" ");
     
-    if(res[0] == "/nick" && res.length == 2){
+    if(res[0].toLowerCase() == "/nick" && res.length == 2){
       updateName(res[1]);
       return;
     }
 
-    if(res[0] == "/disconnect"){
+    if(res[0].toLowerCase() == "/disconnect"){
       socket.disconnect();
     }
 
-    if(res[0] == "/help"){
+    if(res[0].toLowerCase() == "/help"){
       sendHelp();
       return;
     }
@@ -109,12 +109,12 @@ io.sockets.on('connection', function (socket) {
   }
 
   //Set name and notify clients
+  sendHelp();
   var name = 'Guest' + Math.floor(100 + Math.random() * 900);
   broadcast('<span class="serverMessage">' + name + ' has entered chat.</span>');
   users.push(name);
   io.sockets.emit('users', users);
   socket.emit('name', {name : name});
-  sendHelp();
 
   //Begin Handlers
   socket.on('broadcast', function (data) {
