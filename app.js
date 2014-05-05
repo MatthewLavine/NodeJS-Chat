@@ -16,7 +16,13 @@ process.on('SIGINT', function() {
   console.log( "\nShutting down from manual SIGINT (Ctrl-C)." );
   io.sockets.emit('annouce', {message : '<span class="adminMessage">SERVER GOING OFFLINE!</span>'});
   process.exit();
-})
+});
+
+process.on('SIGUSR2', function() {
+  console.log( "\nShutting down from nodemon SUGUSR2 (RESTART)." );
+  io.sockets.emit('annouce', {message : '<span class="adminMessage">SERVER RESTARTING!</span>'});
+  process.exit();
+});
 
 app.get('*', function(req, res) {
     res.render('index.ejs', {
