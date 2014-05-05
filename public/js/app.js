@@ -57,7 +57,7 @@ function chat(source, data) {
   var data = makeFancy(data);
   var lines = data.split('<br>').length;
   $('#chatMessage').append(data  + '<br>');
-  $('#chatTime').append('[ ' + time + ' ]');
+  $('#chatTime').append('[' + time + ']');
   for(var i=0;i<lines;i++){
     $('#chatTime').append('<br>');
   }

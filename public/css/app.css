@@ -37,6 +37,10 @@ a {
 	color:green;
 }
 
+@media only screen and (max-width: 320px) {
+   .chatLog { font-size: 7pt; }
+}
+
 .chatTime {
 	text-align: center;
 	overflow:hidden;
