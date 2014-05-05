@@ -41,7 +41,7 @@ io.sockets.on('connection', function (socket) {
     }
 
     if(res[0] == "/disconnect"){
-      disconnect();
+      socket.disconnect();
     }
 
     if(res[0] == "/help"){

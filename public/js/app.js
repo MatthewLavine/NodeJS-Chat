@@ -132,7 +132,7 @@ socket.on('name', function (data) {
 });
 
 socket.on('disconnect', function (data) {
-  chat('<span class="serverMessage">You have disconnected.\nType /connect to reconnect.</span>');
+  chat('SERVER', '<span class="serverMessage">You have disconnected. Type /connect to reconnect.</span>');
   updateUsers([]);
 })
 
