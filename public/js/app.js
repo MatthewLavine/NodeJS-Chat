@@ -4,6 +4,19 @@ var users = [];
 var socket = io.connect('http://' + ip);
 var isActive = true;
 
+$(document).ready(function () {
+    updateContainer();
+    $(window).resize(function() {
+        updateContainer();
+    });
+});
+function updateContainer() {
+    var $containerHeight = $(window).height();
+    $('.chatLog').css({
+        height: $(window).height() - 125
+    });
+}
+
 window.onfocus = function () { 
   isActive = true;
   document.title = 'HardOrange IRC';
