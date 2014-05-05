@@ -1,7 +1,7 @@
 $(document).foundation();
 
 var users = [];
-var socket = io.connect('http://128.235.132.224/');
+var socket = io.connect('http://10.200.137.3/');
 var isActive = true;
 
 window.onfocus = function () { 
@@ -19,6 +19,21 @@ function checkInput(){
     document.getElementById("chatBox").value = val.substr(0,20);
   }
 }
+
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+  };
+
+  function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+      return entityMap[s];
+    });
+  }
 
 function makeFancy(str){
   var tempStr = str;
@@ -86,7 +101,7 @@ function updateName(data){
 }
 
 socket.on('broadcast', function (data) {
-  chat(data.client + ": " + data.message);
+  chat(data.client + ": " + escapeHtml(data.message));
 });
 
 socket.on('annouce', function (data) {

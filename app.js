@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var server = app.listen(3000);
 var io = require('socket.io').listen(server);
-
+io.set('log level', 1);
 
 app.set("view options", {layout: false});
 app.use(express.static(__dirname + '/public'));
@@ -42,14 +42,27 @@ io.sockets.on('connection', function (socket) {
     sendHelp();
   }
 
+  function removeItem(arr, item) {
+      for(var i = arr.length; i--;) {
+          if(arr[i] === item) {
+              arr.splice(i, 1);
+          }
+      }
+  }
+
   function updateName(data){
+    if(users.indexOf(data) != -1){
+      socket.emit('annouce', {message : "<span class='serverMessage'>That nick is taken!</span>"});
+      return;
+    }
     oldName = name;
     name = data;
-    users.pop(oldName);
+    removeItem(users, oldName);
     users.push(name);
     io.sockets.emit('users', users);
     socket.emit('name', {name : name});
     broadcast('<span class="serverMessage">' + oldName + ' has changed name to ' + data + '.</span>');
+    console.log(users);
   }
 
   function disconnect(data){
