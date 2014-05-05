@@ -37,6 +37,10 @@ a {
 	color:green;
 }
 
+.error {
+	border: 2px solid red !important;
+}
+
 @media only screen and (max-width: 320px) {
    .chatLog { font-size: 7pt; }
 }

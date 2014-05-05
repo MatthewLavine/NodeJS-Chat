@@ -93,9 +93,7 @@ function sendMessage(){
   }
 
   if(document.getElementById("chatBox").value.trim() != ""){
-    if(!$(alertZone).hasClass("hide")){
-      $(alertZone).addClass("hide");
-    }
+      $('#chatBox').removeClass("error");
 
     if(document.getElementById("chatBox").value.trim() == "/clear") {
       clearLog();
@@ -104,7 +102,9 @@ function sendMessage(){
     }
     document.getElementById("chatBox").value = "";
   } else {
-    $(alertZone).removeClass("hide");
+    if(!$('#chatBox').hasClass("error")){
+      $('#chatBox').addClass("error");
+    }
   }        
 }
 
