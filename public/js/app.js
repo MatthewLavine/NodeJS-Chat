@@ -74,6 +74,10 @@ function chat(source, data) {
     var alert = new Audio('sounds/alert.mp3');
     alert.play();
     document.title = 'New Message!';
+    if(data.toLowerCase().indexOf(' ' + $(nickname).html().toLowerCase()) > -1){
+      setTimeout(function(){alert.play();}, 6);
+    document.title = 'You have been mentioned!';
+    }
   }
 }
 
