@@ -47,8 +47,9 @@ io.sockets.on('connection', function (socket) {
   function parseServerCommand(data) {
     var res = data.message.split(" ");
     
-    if(res[0].toLowerCase() == "/nick" && res.length == 2){
-      updateName(res[1]);
+    if(res[0].toLowerCase() == "/nick"){
+      removeItem(res, res[0]);
+      updateName(res.join(' '));
       return;
     }
 

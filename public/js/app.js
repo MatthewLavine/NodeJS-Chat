@@ -30,7 +30,7 @@ window.onblur = function () {
 function checkInput(){
   var val = document.getElementById("chatBox").value;
   if(val.substr(0,5) == "/nick"){
-    document.getElementById("chatBox").value = val.substr(0,20);
+    document.getElementById("chatBox").value = val.substr(0,25);
   }
 }
 
