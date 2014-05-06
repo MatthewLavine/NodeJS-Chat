@@ -14,7 +14,7 @@ app.use(express.static(__dirname + '/public'));
 
 process.on('SIGINT', function() {
   console.log( "\nShutting down from manual SIGINT (Ctrl-C), NOW." );
-  io.sockets.emit('annouce', {message : '<span class="adminMessage">SERVER GOING OFFLINE!</span>'});
+  io.sockets.emit('annouce', {message : '<span class="adminMessage">SHUTTING DOWN, NOW!</span>'});
   process.exit();
 });
 
@@ -26,7 +26,7 @@ process.once('SIGUSR2', function () {
 
 function gracefulShutdown(kill){
   console.log( "\nShutting down from nodemon SUGUSR2 (RESTART) in 10 seconds..." );
-  io.sockets.emit('annouce', {message : '<span class="adminMessage">SERVER RESTARTING IN 10 SECONDS!</span>'});
+  io.sockets.emit('annouce', {message : '<span class="adminMessage">RESTARTING IN 10 SECONDS!</span>'});
   setTimeout(function(){kill()}, 10000);
 }
 
