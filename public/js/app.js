@@ -4,6 +4,7 @@ var users = [];
 var socket = io.connect('http://' + ip);
 var isActive = true;
 var modalOpen = false;
+var sounds = false;
 
 $(document).ready(function () {
     updateContainer();
@@ -19,14 +20,14 @@ function updateContainer() {
   $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
 }
 
-window.onfocus = function () { 
+window.onfocus = function () {
   isActive = true;
   document.title = 'HardOrange IRC';
-}; 
+};
 
-window.onblur = function () { 
-  isActive = false; 
-}; 
+window.onblur = function () {
+  isActive = false;
+};
 
 function checkInput(){
   var val = document.getElementById("chatBox").value;
@@ -82,16 +83,17 @@ function chat(source, data) {
       </div> \
     </div> \
     ');
+  notify(source + ': ' + data.replace(/(<([^>]+)>)/ig,"", false));
   var height = $('.chatMessage').last().height();
   $('.chatName').last().css( {"height" : height});
   $('.chatTime').last().css( {"height" : height});
   $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
   if(!isActive){
     var alert = new Audio('sounds/alert.mp3');
-    alert.play();
+    playSound(alert);
     document.title = 'New Message!';
     if(data.toLowerCase().indexOf(' ' + $(nickname).html().toLowerCase()) > -1){
-      setTimeout(function(){alert.play();}, 6);
+      setTimeout(function(){playSound(alert);}, 6);
     document.title = 'You have been mentioned!';
     }
   }
@@ -107,7 +109,7 @@ function updateUsers(data) {
   for(i in data) {
     list += '<li><a href="#">' + data[i] + '</a></li>';
   }
-  document.getElementById("usersList").innerHTML = list;  
+  document.getElementById("usersList").innerHTML = list;
 }
 
 function sendMessage(){
@@ -128,7 +130,7 @@ function sendMessage(){
     if(!$('#chatBox').hasClass("error")){
       $('#chatBox').addClass("error");
     }
-  }        
+  }
 }
 
 function updateName(data){
@@ -161,21 +163,43 @@ $(document).keydown(function(e) {
     if(modalOpen){
       saveNick();
     } else {
-      sendMessage();  
+      sendMessage();
     }
   }
 });
 
-function notify(data){
-  if(!Notify.needsPermission()){
+function notify(data, force){
+  if((force || !isActive) && !Notify.needsPermission()){
     new Notify('Incoming Message!', {
         body: data,
-        timeout: 5
+        timeout: 30
     }).show();
   }
 }
 
-/* https://github.com/alexgibson/notify.js */
-$('#enableNotifications').click(function(){
-  Notify.requestPermission();
+if(Notify.requestPermission()){
+  $('#enableNotifications').click(function(){
+    Notify.requestPermission();
+  });
+} else {
+  $('#enableNotifications').html('Desktop Notifications Enabled');
+    $('#enableNotifications').click(function(){
+      notify('Notifications can be disabled in your browser\'s settings.',true);
+    });
+}
+
+function playSound(sound){
+  if(sounds){
+    sound.play();
+  }
+}
+
+$('#toggleSounds').click(function(){
+  if(sounds){
+    sounds = false;
+    $('#toggleSounds').html('Enable Message Sounds');
+  } else {
+    sounds = true;
+    $('#toggleSounds').html('Disable Message Sounds');
+  }
 });
