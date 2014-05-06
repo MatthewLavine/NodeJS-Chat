@@ -12,6 +12,7 @@ $(document).ready(function () {
         updateContainer();
     });
 });
+
 function updateContainer() {
     var $containerHeight = $(window).height();
     $('.chatLog').animate({
@@ -141,6 +142,25 @@ function sendMessage(){
 function updateName(data){
   $(nickname).html(data.name);
 }
+
+$('#saveNick').click(function(){
+  $.cookie('nick', $(nickname).html());
+    notify('Nick saved!', true);
+});
+
+function rememberNick(){
+  if($.cookie('nick') != undefined){
+    document.getElementById("chatBox").value = '/nick ' + $.cookie('nick');
+    sendMessage();
+  }
+}
+
+rememberNick();
+
+socket.on('connect', function(data){
+  console.log('connect');
+  rememberNick();
+});
 
 socket.on('broadcast', function (data) {
   chat(data.client, data.message);
