@@ -172,17 +172,35 @@ function notify(data, force){
   if((force || !isActive) && !Notify.needsPermission()){
     new Notify('Incoming Message!', {
         body: data,
-        timeout: 30
+        timeout: 30,
+        permissionGranted: noNeedPermission,
+        permissionDenied: needPermission
     }).show();
   }
 }
 
-if(Notify.requestPermission()){
+if(Notify.needsPermission()){
+  needPermission();
+} else {
+  noNeedPermission();
+}
+
+function testNotify(){
+  setTimeout(function(){
+    notify('Notifications enabled.',true);
+  }, 5000);
+}
+
+function needPermission(){
+  $('#enableNotifications').html('Enable Desktop Notifications');
   $('#enableNotifications').click(function(){
     Notify.requestPermission();
+    testNotify();
   });
-} else {
-  $('#enableNotifications').html('Desktop Notifications Enabled');
+}
+
+function noNeedPermission(){
+    $('#enableNotifications').html('Desktop Notifications Enabled');
     $('#enableNotifications').click(function(){
       notify('Notifications can be disabled in your browser\'s settings.',true);
     });
