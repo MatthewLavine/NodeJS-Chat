@@ -36,7 +36,7 @@ process.stdin.resume();
 process.stdin.setEncoding('utf8');
  
 process.stdin.on('data', function (chunk) {
- io.sockets.emit('annouce', {message : '<span class="adminMessage">' + chunk + '</span>'});
+ io.sockets.emit('annouce', {message : '<span class="adminMessage">' + chunk.toUpperCase() + '</span>'});
 });
 
 io.sockets.on('connection', function (socket) {
