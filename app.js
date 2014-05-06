@@ -97,7 +97,7 @@ io.sockets.on('connection', function (socket) {
 
   function updateName(data){
     if(users.indexOf(data) != -1){
-      socket.emit('annouce', {message : "<span class='serverMessage'>That nick is taken!</span>"});
+      socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data + "' is taken!</span>"});
       return;
     }
     if(data.toLowerCase() == "admin" || data.toLowerCase() == "server"){
@@ -147,7 +147,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('disconnect', function (data) {
-    users.pop(name);
+    removeItem(users, name);
     io.sockets.emit('users', users);
     broadcast('<span class="serverMessage">' + name + ' has exited chat.</span>');
   });
