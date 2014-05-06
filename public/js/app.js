@@ -14,9 +14,9 @@ $(document).ready(function () {
 });
 function updateContainer() {
     var $containerHeight = $(window).height();
-    $('.chatLog').css({
+    $('.chatLog').animate({
         height: $(window).height() - 125
-    });
+    }, 1000);
   $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
 }
 
