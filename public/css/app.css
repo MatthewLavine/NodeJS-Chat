@@ -33,10 +33,9 @@ a {
 	font-size: 12pt;
 	line-height: 18pt;
 	height:300px;
-	border: 1px solid #cccccc;
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 	margin: 0 0 0.5rem 0;
-	padding: 1rem;
+	border: 1rem solid #383838;
 	overflow: hidden;
 	background: #333333;
 	color:green;
