@@ -20,6 +20,10 @@ function updateContainer() {
   $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
 }
 
+$('#chatLog').click(function(){
+      $('#chatBox').focus();
+    });
+
 window.onfocus = function () {
   isActive = true;
   document.title = 'HardOrange IRC';
@@ -83,7 +87,7 @@ function chat(source, data) {
       </div> \
     </div> \
     ');
-  notify(source + ': ' + data.replace(/(<([^>]+)>)/ig,"", false));
+  notify(source + ': ' + data.replace(/(<([^>]+)>)/ig,""), false);
   var height = $('.chatMessage').last().height();
   $('.chatName').last().css( {"height" : height});
   $('.chatTime').last().css( {"height" : height});
@@ -95,6 +99,7 @@ function chat(source, data) {
     if(data.toLowerCase().indexOf(' ' + $(nickname).html().toLowerCase()) > -1){
       setTimeout(function(){playSound(alert);}, 6);
     document.title = 'You have been mentioned!';
+    notify('You have been mentioned by ' + source + '!', false);
     }
   }
 }
@@ -168,14 +173,30 @@ $(document).keydown(function(e) {
   }
 });
 
+var reverseEntityMap = {
+  "&amp;" : "&",
+  "&lt;" : "<",
+  "&gt;" : ">",
+  '&quot;' : '"',
+  '&#39;' : "'",
+  '&#x2F;' : "/" 
+};
+
+function reverseEscapeHtml(string) {
+  return String(string).replace(/&amp;|&lt;|&gt;|&quot;|&#39;|&#x2F;/g, function (s) {
+    return reverseEntityMap[s];
+  });
+}
+
 function notify(data, force){
   if((force || !isActive) && !Notify.needsPermission()){
-    new Notify('Incoming Message!', {
-        body: data,
+    new Notify('HardOrange Chat', {
+        body: reverseEscapeHtml(data),
         timeout: 10
     }).show();
   }
 }
+
 if(Notify.isSupported()){
   if(Notify.needsPermission()){
     needPermission();
