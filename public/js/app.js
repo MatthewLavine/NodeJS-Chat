@@ -165,3 +165,17 @@ $(document).keydown(function(e) {
     }
   }
 });
+
+function notify(data){
+  if(!Notify.needsPermission()){
+    new Notify('Incoming Message!', {
+        body: data,
+        timeout: 5
+    }).show();
+  }
+}
+
+/* https://github.com/alexgibson/notify.js */
+$('#enableNotifications').click(function(){
+  Notify.requestPermission();
+});
