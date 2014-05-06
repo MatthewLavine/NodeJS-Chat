@@ -155,8 +155,6 @@ function rememberNick(){
   }
 }
 
-rememberNick();
-
 socket.on('connect', function(data){
   console.log('connect');
   rememberNick();
@@ -212,6 +210,7 @@ function notify(data, force){
   if((force || !isActive) && !Notify.needsPermission()){
     new Notify('HardOrange Chat', {
         body: reverseEscapeHtml(data),
+        icon: '',
         timeout: 10
     }).show();
   }
