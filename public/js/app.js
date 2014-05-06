@@ -219,5 +219,7 @@ $('#toggleSounds').click(function(){
   } else {
     sounds = true;
     $('#toggleSounds').html('Disable Message Sounds');
+    var alert = new Audio('sounds/alert.mp3');
+    playSound(alert);
   }
 });
