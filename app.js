@@ -18,11 +18,17 @@ process.on('SIGINT', function() {
   process.exit();
 });
 
-process.on('SIGUSR2', function() {
+process.once('SIGUSR2', function () {
+  gracefulShutdown(function () {
+    process.kill(process.pid, 'SIGUSR2');
+  });
+});
+
+function gracefulShutdown(kill){
   console.log( "\nShutting down from nodemon SUGUSR2 (RESTART)." );
   io.sockets.emit('annouce', {message : '<span class="adminMessage">SERVER RESTARTING!</span>'});
-  process.exit();
-});
+  kill();
+}
 
 app.get('*', function(req, res) {
     res.render('index.ejs', {
@@ -34,7 +40,7 @@ var users = [];
 
 process.stdin.resume();
 process.stdin.setEncoding('utf8');
- 
+
 process.stdin.on('data', function (chunk) {
  io.sockets.emit('annouce', {message : '<span class="adminMessage">' + chunk.toUpperCase() + '</span>'});
 });
@@ -46,7 +52,7 @@ io.sockets.on('connection', function (socket) {
 
   function parseServerCommand(data) {
     var res = data.message.split(" ");
-    
+
     if(res[0].toLowerCase() == "/nick"){
       removeItem(res, res[0]);
       updateName(res.join(' '));
@@ -135,7 +141,7 @@ io.sockets.on('connection', function (socket) {
       parseServerCommand(data);
     } else {
       bbcode.parse(escapeHtml(data.message), function(content){
-        io.sockets.emit('broadcast', {client : name, message : content});        
+        io.sockets.emit('broadcast', {client : name, message : content});
       });
     }
   });
@@ -146,4 +152,3 @@ io.sockets.on('connection', function (socket) {
     broadcast('<span class="serverMessage">' + name + ' has exited chat.</span>');
   });
 });
-
