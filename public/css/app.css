@@ -25,6 +25,10 @@ a {
 	color: orange;
 }
 
+.newNick {
+	font-size: 16pt !important;
+}
+
 .chatLog {
 	font-size: 12pt;
 	line-height: 18pt;

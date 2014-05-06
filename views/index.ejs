@@ -28,7 +28,12 @@
       <aside class="left-off-canvas-menu">
         <ul class="off-canvas-list">
           <li><label>Nickname</label></li>
-          <li><a href="#" class="footer" id="nickname"></a></li>
+          <li><a href="#" class="footer" id="nickname" data-reveal-id="changeNick"></a></li>
+            <div id="changeNick" class="reveal-modal small" data-reveal>
+              <h3>Enter a new nick:</h3>
+              <input type="text" id="newNick" class="newNick" placeholder="Bobby Tables">
+              <a class="close-reveal-modal">&#215;</a>
+            </div>
           <li><label>Chat Rooms</label></li>
           <li><a href="#" class="footer">Main Server</a></li>
           <li><label>Powered by</label></li>

@@ -3,6 +3,7 @@ $(document).foundation();
 var users = [];
 var socket = io.connect('http://' + ip);
 var isActive = true;
+var modalOpen = false;
 
 $(document).ready(function () {
     updateContainer();
@@ -32,6 +33,21 @@ function checkInput(){
   if(val.substr(0,5) == "/nick"){
     document.getElementById("chatBox").value = val.substr(0,25);
   }
+}
+
+$(document).on('opened', '[data-reveal]', function () {
+  document.getElementById("newNick").focus();
+  modalOpen = true;
+});
+
+$(document).on('closed', '[data-reveal]', function () {
+  modalOpen = false;
+});
+
+function saveNick(){
+  document.getElementById("chatBox").value = '/nick ' + document.getElementById("newNick").value;
+  sendMessage();
+  $('#changeNick').foundation('reveal', 'close');
 }
 
 function makeFancy(str){
@@ -142,6 +158,10 @@ socket.on('disconnect', function (data) {
 
 $(document).keydown(function(e) {
   if(e.which == 13) { //Enter Key
-    sendMessage();
+    if(modalOpen){
+      saveNick();
+    } else {
+      sendMessage();  
+    }
   }
 });
