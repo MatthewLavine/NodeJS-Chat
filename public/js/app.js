@@ -99,7 +99,7 @@ function chat(source, data) {
     var alert = new Audio('sounds/alert.mp3');
     playSound(alert);
     document.title = 'New Message!';
-    if(data.toLowerCase().indexOf(' ' + $(nickname).html().toLowerCase()) > -1){
+    if(data.toLowerCase().indexOf($(nickname).html().toLowerCase()) > -1){
       setTimeout(function(){playSound(alert);}, 6);
       document.title = 'You have been mentioned!';
       if(source != 'SERVER'){
