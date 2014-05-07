@@ -210,7 +210,7 @@ function notify(data, force){
   if((force || !isActive) && !Notify.needsPermission()){
     new Notify('HardOrange Chat', {
         body: reverseEscapeHtml(data),
-        icon: '',
+        icon: 'images/hardorange_small.png',
         timeout: 10
     }).show();
   }
