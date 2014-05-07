@@ -13,6 +13,7 @@ body {
 .serverMessage {
 	font-weight: bold;
 	font-style: italic;
+	color: #A6E22E !important;
 }
 
 .adminMessage {
@@ -38,8 +39,8 @@ a {
 	border: 1rem solid #383838;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	background: #333333;
-	color:green;
+	background: #272822;
+	color: #F8F8F2;
 	-ms-overflow-style: none;
 	overflow: -moz-scrollbars-none;
 }
@@ -48,9 +49,9 @@ a {
  display: none;
 }
 
-.chatLog > div:nth-child(even) {
-	background: #383838;
-}
+/*.chatLog > div:nth-child(even) {
+	background: #49483E;
+}*/
 
 .error {
 	border: 2px solid red !important;
@@ -61,11 +62,13 @@ a {
 }
 
 .chatTime {
+	color: #FD971F;
 	text-align: center;
 	overflow:hidden;
 }
 
 .chatName {
+	color: #66D9EF;
 	text-align: right;
 	overflow:hidden;
 }
