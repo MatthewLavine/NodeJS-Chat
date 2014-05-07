@@ -37,6 +37,7 @@ a {
 	margin: 0 0 0.5rem 0;
 	border: 1rem solid #383838;
 	overflow-y: scroll;
+	overflow-x: hidden;
 	background: #333333;
 	color:green;
 }
