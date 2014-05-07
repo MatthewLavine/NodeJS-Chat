@@ -5,6 +5,8 @@ var socket = io.connect('http://' + ip);
 var isActive = true;
 var modalOpen = false;
 var sounds = false;
+var lastUser = '';
+var lastUserMsgCount = 0;
 
 $(document).ready(function () {
     updateContainer();
@@ -73,17 +75,32 @@ function makeFancy(str){
 }
 
 function chat(source, data) {
-  var time = moment().format('HH:mm');
+  var time = moment().format('HH:mm:ss');
+  var newSource;
+  if(source == lastUser && lastUserMsgCount < 15){
+    lastUserMsgCount++;
+    newSource = '';
+  } else {
+    newSource = source;
+    lastUserMsgCount=1;
+  }
+  if(newSource !== ''){
+    newSource = '&lt;' + newSource + '&gt;';
+  }
+  lastUser = source;
+  if(newSource == '&lt;SERVER&gt;'){
+    newSource = '<span class="serverMessage">' + newSource + '</span>';
+  }
   data = makeFancy(data);
   $('#chatLog').append(' \
     <div class="row"> \
       <div class="large-1 columns show-for-large-up"> \
-        <div class="chatTime full-height">' + '[' + time + ']' + '</div> \
+        <div class="chatTime full-height">' + '' + time + '' + '</div> \
       </div> \
-      <div class="small-3 medium-2 large-2 columns right-seperator"> \
-         <div class="chatName full-height">' + source + '</div> \
+      <div class="small-4 medium-2 large-2 columns right-seperator"> \
+         <div class="chatName full-height">' + newSource + '</div> \
       </div> \
-      <div class="small-9 medium-10 large-9 columns"> \
+      <div class="small-8 medium-10 large-9 columns"> \
         <div class="chatMessage full-height">' + data + '</div> \
       </div> \
     </div> \
@@ -111,6 +128,8 @@ function chat(source, data) {
 
 function clearLog(){
   $('#chatLog').html('');
+  lastUser = '';
+  lastUserMsgCount = 0;
 }
 
 function updateUsers(data) {
@@ -183,7 +202,7 @@ socket.on('name', function (data) {
 socket.on('disconnect', function (data) {
   chat('SERVER', '<span class="serverMessage">You have disconnected. Type /connect to reconnect.</span>');
   updateUsers([]);
-  //setTimeout(function(){location.reload();}, 1000); //LiveReload Substitute
+  setTimeout(function(){location.reload();}, 1000); //LiveReload Substitute
   
 });
 
