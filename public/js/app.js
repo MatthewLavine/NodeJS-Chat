@@ -74,7 +74,7 @@ function makeFancy(str){
 
 function chat(source, data) {
   var time = moment().format('HH:mm');
-  var data = makeFancy(data);
+  data = makeFancy(data);
   $('#chatLog').append(' \
     <div class="row"> \
       <div class="large-1 columns show-for-large-up"> \
@@ -112,7 +112,7 @@ function clearLog(){
 function updateUsers(data) {
   var list = "";
   list += '<li><label>Users</label></li>';
-  for(i in data) {
+  for(var i in data) {
     list += '<li><a href="#">' + data[i] + '</a></li>';
   }
   document.getElementById("usersList").innerHTML = list;
@@ -123,7 +123,7 @@ function sendMessage(){
     socket.socket.connect();
   }
 
-  if(document.getElementById("chatBox").value.trim() != ""){
+  if(document.getElementById("chatBox").value.trim() !== ""){
       $('#chatBox').removeClass("error");
 
     if(document.getElementById("chatBox").value.trim() == "/clear") {
@@ -149,7 +149,7 @@ $('#saveNick').click(function(){
 });
 
 function rememberNick(){
-  if($.cookie('nick') != undefined){
+  if($.cookie('nick') !== undefined){
     document.getElementById("chatBox").value = '/nick ' + $.cookie('nick');
     sendMessage();
   }
@@ -179,7 +179,7 @@ socket.on('name', function (data) {
 socket.on('disconnect', function (data) {
   chat('SERVER', '<span class="serverMessage">You have disconnected. Type /connect to reconnect.</span>');
   updateUsers([]);
-})
+});
 
 $(document).keydown(function(e) {
   if(e.which == 13) { //Enter Key
