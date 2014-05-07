@@ -27,7 +27,7 @@ $('#chatLog').click(function(){
 
 window.onfocus = function () {
   isActive = true;
-  document.title = 'HardOrange IRC';
+  document.title = 'HardOrange Chat';
 };
 
 window.onblur = function () {
