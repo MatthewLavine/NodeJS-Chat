@@ -40,6 +40,12 @@ a {
 	overflow-x: hidden;
 	background: #333333;
 	color:green;
+	-ms-overflow-style: none;
+	overflow: -moz-scrollbars-none;
+}
+
+.chatLog::-webkit-scrollbar {
+ display: none;
 }
 
 .chatLog > div:nth-child(even) {
