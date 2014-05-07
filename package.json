@@ -11,6 +11,8 @@
     "grunt" : "0.4.x",
     "grunt-contrib-uglify" : "latest",
     "grunt-contrib-jshint" : "latest",
-    "grunt-contrib-watch" : "latest"
+    "grunt-contrib-watch" : "latest",
+    "grunt-contrib-cssmin" : "latest",
+    "grunt-contrib-csslint" : "latest"
   }
 }
