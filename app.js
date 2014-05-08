@@ -34,10 +34,10 @@ function gracefulShutdown(kill){
 
 app.get('/gitpull', function(req, res) {
   //GitHub push hook
-  function puts(error, stdout, stderr) {sys.puts(stdout)}
-  exec("git pull", puts);
   res.status(200);
   res.send('success');
+  function puts(error, stdout, stderr) {sys.puts(stdout)}
+  exec("git pull", puts);
 });
 
 app.get('*', function(req, res) {
