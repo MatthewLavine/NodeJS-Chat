@@ -1,6 +1,8 @@
-var ip = "128.235.132.224";
-var port = "3000";
-
+var config = require('./config.js');
+console.log(config.ip);
+console.log(config.port);
+var ip = config.ip;
+var port = config.port;
 var express = require('express');
 var app = express();
 var server = app.listen(port);
@@ -8,6 +10,8 @@ var ejs = require('ejs');
 var bbcode = require('bbcode');
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
+var sys = require('sys')
+var exec = require('child_process').exec;
 
 app.set("view options", {layout: false});
 app.use(express.static(__dirname + '/public'));
@@ -29,6 +33,12 @@ function gracefulShutdown(kill){
   io.sockets.emit('annouce', {message : '<span class="adminMessage">RESTARTING IN 10 SECONDS!</span>'});
   setTimeout(function(){kill()}, 10000);
 }
+
+app.get('/gitpull', function(req, res) {
+  function puts(error, stdout, stderr) {sys.puts(stdout)}
+  exec("git status", puts);
+  res.send('success');
+});
 
 app.get('*', function(req, res) {
   res.render('index.ejs', {
