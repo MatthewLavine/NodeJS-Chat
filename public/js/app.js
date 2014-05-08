@@ -19,8 +19,9 @@ function updateContainer() {
     var $containerHeight = $(window).height();
     $('.chatLog').animate({
         height: $(window).height() - 125
-    }, 1000);
-  $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+    }, 1000, function(){
+      $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+    });
 }
 
 $('#chatLog').click(function(){
@@ -136,7 +137,7 @@ function updateUsers(data) {
   var list = "";
   list += '<li><label>Users</label></li>';
   for(var i in data) {
-    list += '<li><a href="#">' + data[i] + '</a></li>';
+    list += '<li><a href="#">' + data[i][0] + '</a></li>';
   }
   document.getElementById("usersList").innerHTML = list;
 }
@@ -179,7 +180,6 @@ function rememberNick(){
 }
 
 socket.on('connect', function(data){
-  console.log('connect');
   rememberNick();
 });
 

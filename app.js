@@ -31,9 +31,9 @@ function gracefulShutdown(kill){
 }
 
 app.get('*', function(req, res) {
-    res.render('index.ejs', {
-    	ip: ip
-        });
+  res.render('index.ejs', {
+   ip: ip
+ });
 });
 
 var users = [];
@@ -57,6 +57,19 @@ io.sockets.on('connection', function (socket) {
       removeItem(res, res[0]);
       updateName(res.join(' '));
       return;
+    }
+
+    if(res[0].toLowerCase() == "/pm" && res.length >= 3){
+      if(findUser(res[1])){
+        pm(res[1], res.slice(2, res.length).join(' '));
+        return;
+      } else if (findUser(res.slice(1 ,3).join(' '))){
+        pm(res.slice(1 ,3).join(' '), res.slice(3, res.length).join(' '));
+        return;
+      } else {
+        var help = "<span class='serverMessage'>User not found for command '" + res.join(' ') + "'</span>";
+        socket.emit('annouce', {message : help});        
+      }
     }
 
     if(res[0].toLowerCase() == "/disconnect"){
@@ -88,15 +101,39 @@ io.sockets.on('connection', function (socket) {
   }
 
   function removeItem(arr, item) {
-      for(var i = arr.length; i--;) {
-          if(arr[i] === item) {
-              arr.splice(i, 1);
-          }
+    for(var i = arr.length; i--;) {
+      if(arr[i].toString() === item.toString()) {
+        arr.splice(i, 1);
       }
+    }
+  }
+
+  function findUser(user) {
+    for(var i = users.length; i--;) {
+      if(users[i][0] == user) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function findSocket(user) {
+    for(var i = users.length; i--;) {
+      if(users[i][0] == user) {
+        return users[i][1];
+      }
+    }
+    return 0;    
+  }
+
+  function pm(dest, data){
+    data = '<span class="pm">&lt;to ' + dest + '&gt; ' + data + '</span';
+    io.sockets.socket(findSocket(dest)).emit('broadcast', {client : name, message : data});
+    socket.emit('broadcast', {client : name, message : data});
   }
 
   function updateName(data){
-    if(users.indexOf(data) != -1){
+    if(findUser(data)){
       socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data + "' is taken!</span>"});
       return;
     }
@@ -106,8 +143,8 @@ io.sockets.on('connection', function (socket) {
     }
     oldName = name;
     name = data;
-    removeItem(users, oldName);
-    users.push(name);
+    removeItem(users, [oldName, socket.id]);
+    users.push([name, socket.id]);
     io.sockets.emit('users', users);
     socket.emit('name', {name : name});
     broadcast('<span class="serverMessage">' + oldName + ' has changed name to ' + data + '.</span>');
@@ -123,7 +160,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function sendHelp(){
-    var help = "<span class='serverMessage'>HardOrange IRC Help - Commands:<br>/nick #nick<br>/clear<br>/disconnect<br>/help</span>";
+    var help = "<span class='serverMessage'>HardOrange IRC Help - Commands:<br>/nick nick<br>/pm nick message<br>/clear<br>/disconnect<br>/help</span>";
     socket.emit('annouce', {message : help});
   }
 
@@ -131,7 +168,7 @@ io.sockets.on('connection', function (socket) {
   sendHelp();
   var name = 'Guest' + Math.floor(100 + Math.random() * 900);
   broadcast('<span class="serverMessage">' + name + ' has entered chat.</span>');
-  users.push(name);
+  users.push([name, socket.id]);
   io.sockets.emit('users', users);
   socket.emit('name', {name : name});
 
@@ -147,7 +184,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('disconnect', function (data) {
-    removeItem(users, name);
+    removeItem(users, [name, socket.id]);
     io.sockets.emit('users', users);
     broadcast('<span class="serverMessage">' + name + ' has exited chat.</span>');
   });
