@@ -127,6 +127,11 @@ io.sockets.on('connection', function (socket) {
   }
 
   function pm(dest, data){
+    if(dest == name){
+      var help = "<span class='serverMessage'>You cannot PM yourself.</span>";
+      socket.emit('annouce', {message : help});
+      return;
+    }
     data = '<span class="pm">&lt;to ' + dest + '&gt; ' + data + '</span';
     io.sockets.socket(findSocket(dest)).emit('broadcast', {client : name, message : data});
     socket.emit('broadcast', {client : name, message : data});
@@ -155,7 +160,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function unrecognized(data){
-    var help = "<span class='serverMessage'>Unknown command '" + data + "'</span>";
+    var help = "<span class='serverMessage'>Unknown command '" + data + "'.</span>";
     socket.emit('annouce', {message : help});
   }
 

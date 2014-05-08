@@ -140,8 +140,11 @@ function updateUsers(data) {
     list += '<li><a href="#" class="chatUser">' + data[i][0] + '</a></li>';
   }
   document.getElementById("usersList").innerHTML = list;
+  linkUsers();
+}
 
-  $(".chatUser").click(function(){
+function linkUsers(){
+    $(".chatUser").click(function(){
       document.getElementById("chatBox").value = '/pm ' + $(this).html() + ' ';
       document.getElementById("chatBox").focus();
     });
