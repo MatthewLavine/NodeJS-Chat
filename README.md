@@ -7,5 +7,5 @@ To run:
 - Clone repo 
 - Run npm install
 - Run Grunt to compile js and css
-- Set server ip and port in app.js
+- Rename and set server ip and port in config.js
 - Run node app
