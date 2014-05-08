@@ -26,6 +26,10 @@ body {
 	color: #AE81FF;
 }
 
+.noList {
+	list-style-type: none;
+}
+
 .chatUser {
 	cursor: pointer;
 }
@@ -36,6 +40,24 @@ a {
 
 .newNick {
 	font-size: 16pt !important;
+}
+
+.usersListContainer {
+	position: absolute;
+	z-index: 999;
+	color: #66D9EF;
+	text-align: right;
+	overflow: hidden;
+	width:200px;
+}
+
+.usersListContainer li label{ 
+	color: #66D9EF;
+}
+
+.usersListContainer ul li a{ 
+	color: #fffff;
+	color: rgba(255,255,255,0.7);
 }
 
 .chatLog {

@@ -7,6 +7,7 @@ var modalOpen = false;
 var sounds = false;
 var lastUser = '';
 var lastUserMsgCount = 0;
+var usersListOn = false;
 
 $(document).ready(function () {
     updateContainer();
@@ -16,12 +17,24 @@ $(document).ready(function () {
 });
 
 function updateContainer() {
-    var $containerHeight = $(window).height();
-    $('.chatLog').animate({
-        height: $(window).height() - 125
-    }, 1000, function(){
-      $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
-    });
+  var $containerHeight = $(window).height();
+  $('.chatLog').animate({
+    height: $(window).height() - 125
+  }, 1000, function(){
+    $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+      setUsersList();
+  });
+}
+
+function setUsersList(){
+  if(!usersListOn){
+    usersListOn = true;
+    $('.main-section').append('<div class="usersListContainer show-for-large-up"><ul class="noList" id="inlineUsersList"><li><label>Online Users</label></li></ul></div>');
+  }
+  $('.usersListContainer').css({
+    'left' :  $('#chatLog').position().left + $('#chatLog').width() - $('.usersListContainer').width() + 16,
+    'top' : $('#chatLog').position().top + ($('#chatLog').outerHeight()-$('#chatLog').height())*2
+  });
 }
 
 $('#chatLog').click(function(){
@@ -76,7 +89,7 @@ function makeFancy(str){
 }
 
 function chat(source, data) {
-  var time = moment().format('HH:mm:ss');
+  var time = moment().format('HH:mm');
   var newSource;
   if(source == lastUser && lastUserMsgCount < 15){
     lastUserMsgCount++;
@@ -135,8 +148,9 @@ function clearLog(){
 }
 
 function updateUsers(data) {
+  setUsersList();
   var list = "";
-  list += '<li><label>Users</label></li>';
+  list += '<li><label>Online Users</label></li>';
   for(var i in data) {
     list += '<li><a href="#" ';
     if(data[i][0] != $(nickname).html()){
@@ -145,6 +159,7 @@ function updateUsers(data) {
     list += '>' + data[i][0] + '</a></li>';
   }
   document.getElementById("usersList").innerHTML = list;
+  document.getElementById("inlineUsersList").innerHTML = list;
   linkUsers();
 }
 
