@@ -102,7 +102,7 @@ function chat(source, data) {
     newSource = '<span class="chatUser">' + newSource + '</span>';
   }
   lastUser = source;
-  if(newSource == '&lt;SERVER&gt;'){
+  if(newSource == 'SERVER'){
     newSource = '<span class="serverMessage">' + newSource + '</span>';
   }
   data = makeFancy(data);
