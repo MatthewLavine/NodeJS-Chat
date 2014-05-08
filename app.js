@@ -36,6 +36,7 @@ app.post('/gitpull', function(req, res) {
   //GitHub push hook
   res.end();
   function puts(error, stdout, stderr) {sys.puts(stdout)}
+  exec("git reset --hard HEAD", puts);
   exec("git pull", puts);
 });
 
