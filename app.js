@@ -1,6 +1,4 @@
 var config = require('./config.js');
-console.log(config.ip);
-console.log(config.port);
 var ip = config.ip;
 var port = config.port;
 var express = require('express');
