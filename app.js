@@ -34,6 +34,7 @@ function gracefulShutdown(kill){
 
 app.post('/gitpull', function(req, res) {
   //GitHub push hook
+  res.end();
   function puts(error, stdout, stderr) {sys.puts(stdout)}
   exec("git pull", puts);
 });
