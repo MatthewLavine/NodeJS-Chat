@@ -32,10 +32,8 @@ function gracefulShutdown(kill){
   setTimeout(function(){kill()}, 10000);
 }
 
-app.get('/gitpull', function(req, res) {
+app.post('/gitpull', function(req, res) {
   //GitHub push hook
-  res.status(200);
-  res.send('success');
   function puts(error, stdout, stderr) {sys.puts(stdout)}
   exec("git pull", puts);
 });
