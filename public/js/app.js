@@ -33,7 +33,7 @@ function setUsersList(){
   }
   $('.usersListContainer').css({
     'left' :  $('#chatLog').position().left + $('#chatLog').width() - $('.usersListContainer').width() + 16,
-    'top' : $('#chatLog').position().top + ($('#chatLog').outerHeight()-$('#chatLog').height())*2
+    'top' : $('#chatLog').position().top + ($('#chatLog').outerHeight()-$('#chatLog').height())*2 + 8
   });
 }
 
