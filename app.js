@@ -36,7 +36,7 @@ function gracefulShutdown(kill){
 
 app.get('/gitpull', function(req, res) {
   function puts(error, stdout, stderr) {sys.puts(stdout)}
-  exec("git status", puts);
+  exec("git pull", puts);
   res.send('success');
 });
 
