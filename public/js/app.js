@@ -230,8 +230,7 @@ socket.on('name', function (data) {
 socket.on('disconnect', function (data) {
   chat('SERVER', '<span class="serverMessage">You have disconnected. Type /connect to reconnect.</span>');
   updateUsers([]);
-  setTimeout(function(){location.reload();}, 1000); //LiveReload Substitute
-  
+  //setTimeout(function(){location.reload();}, 1000); //LiveReload Substitute
 });
 
 $(document).keydown(function(e) {
