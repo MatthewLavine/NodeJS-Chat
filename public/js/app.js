@@ -137,9 +137,14 @@ function updateUsers(data) {
   var list = "";
   list += '<li><label>Users</label></li>';
   for(var i in data) {
-    list += '<li><a href="#">' + data[i][0] + '</a></li>';
+    list += '<li><a href="#" class="chatUser">' + data[i][0] + '</a></li>';
   }
   document.getElementById("usersList").innerHTML = list;
+
+  $(".chatUser").click(function(){
+      document.getElementById("chatBox").value = '/pm ' + $(this).html() + ' ';
+      document.getElementById("chatBox").focus();
+    });
 }
 
 function sendMessage(){
