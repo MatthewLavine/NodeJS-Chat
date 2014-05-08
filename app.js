@@ -51,7 +51,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function parseServerCommand(data) {
-    var res = data.message.split(" ");
+    var res = data.message.trim().split(" ");
 
     if(res[0].toLowerCase() == "/nick"){
       removeItem(res, res[0]);
@@ -59,16 +59,26 @@ io.sockets.on('connection', function (socket) {
       return;
     }
 
-    if(res[0].toLowerCase() == "/pm" && res.length >= 3){
-      if(findUser(res[1])){
-        pm(res[1], res.slice(2, res.length).join(' '));
-        return;
-      } else if (findUser(res.slice(1 ,3).join(' '))){
-        pm(res.slice(1 ,3).join(' '), res.slice(3, res.length).join(' '));
-        return;
+    if(res[0].toLowerCase() == "/pm"){
+      if(res.length >= 3){
+        if(res[1] == 'SERVER'){
+          var help = "<span class='serverMessage'>You cannot PM the server.</span>";
+          socket.emit('annouce', {message : help});   
+          return;
+        }     
+        if(findUser(res[1])){
+          pm(res[1], res.slice(2, res.length).join(' '));
+          return;
+        } else if (findUser(res.slice(1 ,3).join(' '))){
+          pm(res.slice(1 ,3).join(' '), res.slice(3, res.length).join(' '));
+          return;
+        } else {
+          var help = "<span class='serverMessage'>User not found for command '" + res.join(' ') + "'</span>";
+          socket.emit('annouce', {message : help});        
+        }
       } else {
-        var help = "<span class='serverMessage'>User not found for command '" + res.join(' ') + "'</span>";
-        socket.emit('annouce', {message : help});        
+          var help = "<span class='serverMessage'>You must add a PM message.</span>";
+          socket.emit('annouce', {message : help});   
       }
     }
 

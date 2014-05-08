@@ -85,8 +85,8 @@ function chat(source, data) {
     newSource = source;
     lastUserMsgCount=1;
   }
-  if(newSource !== ''){
-    newSource = '&lt;' + newSource + '&gt;';
+  if(newSource !== '' && newSource != 'SERVER' && newSource != $(nickname).html()){
+    newSource = '<span class="chatUser">' + newSource + '</span>';
   }
   lastUser = source;
   if(newSource == '&lt;SERVER&gt;'){
@@ -95,7 +95,7 @@ function chat(source, data) {
   data = makeFancy(data);
   $('#chatLog').append(' \
     <div class="row"> \
-      <div class="large-1 columns show-for-large-up"> \
+      <div class="large-1 columns show-for-large-up right-seperator"> \
         <div class="chatTime full-height">' + '' + time + '' + '</div> \
       </div> \
       <div class="small-4 medium-2 large-2 columns right-seperator"> \
@@ -106,6 +106,7 @@ function chat(source, data) {
       </div> \
     </div> \
     ');
+  linkUsers();
   if(source != 'SERVER'){
     notify(source + ': ' + data.replace(/(<([^>]+)>)/ig,""), false);
   }
@@ -137,7 +138,11 @@ function updateUsers(data) {
   var list = "";
   list += '<li><label>Users</label></li>';
   for(var i in data) {
-    list += '<li><a href="#" class="chatUser">' + data[i][0] + '</a></li>';
+    list += '<li><a href="#" ';
+    if(data[i][0] != $(nickname).html()){
+      list += 'class="chatUser"';
+    }
+    list += '>' + data[i][0] + '</a></li>';
   }
   document.getElementById("usersList").innerHTML = list;
   linkUsers();

@@ -26,6 +26,10 @@ body {
 	color: #AE81FF;
 }
 
+.chatUser {
+	cursor: pointer;
+}
+
 a {
 	color: orange;
 }
