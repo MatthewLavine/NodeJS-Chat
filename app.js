@@ -209,10 +209,15 @@ io.sockets.on('connection', function (socket) {
   //Begin Handlers
   socket.on('config', function (data){
     sendHelp();
-    if(data.name == ''){
-      name = 'Guest' + Math.floor(100 + Math.random() * 900);
+    if(data.name != ''){
+      if(findUser(data.name)){
+        socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data.name + "' is taken!</span>"});
+        name = 'Guest' + Math.floor(100 + Math.random() * 900);
+      } else {
+        name = data.name;
+      }
     } else {
-      name = data.name;
+      name = 'Guest' + Math.floor(100 + Math.random() * 900);
     }
     broadcast('<span class="serverMessage">' + name + ' has entered chat.</span>');
     users.push([name, socket.id, true]);
