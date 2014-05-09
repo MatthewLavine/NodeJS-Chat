@@ -166,11 +166,11 @@ function updateUsers(data) {
   list += '<li><label>Online Users</label></li>';
   for(var j in data) {
     list += '<li><a href="#" ';
-    if(data[i][0] != $(nickname).html()){
+    if(data[j][0] != $(nickname).html()){
       list += 'class="chatUser"';
     }
     list += '>' + data[i][0] + '</a><div class="dot';
-    if(data[i][2]){
+    if(data[j][2]){
       list += ' dot-active';
     } else {
       list += ' dot-away';
