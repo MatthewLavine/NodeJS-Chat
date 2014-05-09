@@ -33,11 +33,11 @@ body {
 }
 
 .dot-active {
-	background: yellow;
+	background: #FFFF00;
 }
 
 .dot-away {
-	background: green;
+	background: #919100;
 }
 
 .pm {
