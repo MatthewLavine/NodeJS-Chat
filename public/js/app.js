@@ -169,7 +169,7 @@ function updateUsers(data) {
     if(data[j][0] != $(nickname).html()){
       list += 'class="chatUser"';
     }
-    list += '>' + data[i][0] + '</a><div class="dot';
+    list += '>' + data[j][0] + '</a><div class="dot';
     if(data[j][2]){
       list += ' dot-active';
     } else {
