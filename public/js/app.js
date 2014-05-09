@@ -158,6 +158,17 @@ function updateUsers(data) {
     if(data[i][0] != $(nickname).html()){
       list += 'class="chatUser"';
     }
+    list += '>' + data[i][0] + '</a><div class="dot"></div></li>';
+  }
+  document.getElementById("usersList").innerHTML = list;
+
+  list = "";
+  list += '<li><label>Online Users</label></li>';
+  for(var j in data) {
+    list += '<li><a href="#" ';
+    if(data[i][0] != $(nickname).html()){
+      list += 'class="chatUser"';
+    }
     list += '>' + data[i][0] + '</a><div class="dot';
     if(data[i][2]){
       list += ' dot-active';
@@ -166,7 +177,7 @@ function updateUsers(data) {
     }
     list += '"></div></li>';
   }
-  document.getElementById("usersList").innerHTML = list;
+
   document.getElementById("inlineUsersList").innerHTML = list;
   linkUsers();
 }
