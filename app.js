@@ -190,7 +190,7 @@ io.sockets.on('connection', function (socket) {
 
   function multiArrayIndex(arr, item){
     for(var i = 0; i < arr.length; i++) {
-      if(arr[i].toString() == item.toString()) {
+      if(arr[i][0].toString() == item[0].toString()) {
           return i;
        }
      }
