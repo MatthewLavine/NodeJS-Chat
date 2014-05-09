@@ -64,7 +64,7 @@ process.stdin.on('data', function (chunk) {
 });
 
 io.sockets.on('connection', function (socket) {
-  var name = '';
+  var name = 'Guest' + Math.floor(100 + Math.random() * 900);
 
   function broadcast(data) {
     io.sockets.emit('annouce', {message : data});
@@ -213,12 +213,9 @@ io.sockets.on('connection', function (socket) {
     if(data.name != ''){
       if(findUser(data.name)){
         socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data.name + "' is taken!</span>"});
-        name = 'Guest' + Math.floor(100 + Math.random() * 900);
       } else {
         name = data.name;
       }
-    } else {
-      name = 'Guest' + Math.floor(100 + Math.random() * 900);
     }
     broadcast('<span class="serverMessage">' + name + ' has entered chat.</span>');
     users.push([name, socket.id, true]);
