@@ -207,8 +207,9 @@ io.sockets.on('connection', function (socket) {
   }
 
   //Begin Handlers
+  sendHelp();
+
   socket.on('config', function (data){
-    sendHelp();
     if(data.name != ''){
       if(findUser(data.name)){
         socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data.name + "' is taken!</span>"});
