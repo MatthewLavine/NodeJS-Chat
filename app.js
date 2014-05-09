@@ -217,7 +217,6 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('status', function (data) {
     var index = multiArrayIndex(users, [name, socket.id, !data.status]);
-    if(index === undefined){console.log('missing user');console.log(name + ' ' + data);return;}
     users[index][2] = data.status;
     io.sockets.emit('users', users);
   });
