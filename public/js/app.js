@@ -43,11 +43,13 @@ $('#chatLog').click(function(){
 
 window.onfocus = function () {
   isActive = true;
+  updateStatus();
   document.title = 'HardOrange Chat';
 };
 
 window.onblur = function () {
   isActive = false;
+  updateStatus();
 };
 
 function checkInput(){
@@ -156,7 +158,13 @@ function updateUsers(data) {
     if(data[i][0] != $(nickname).html()){
       list += 'class="chatUser"';
     }
-    list += '>' + data[i][0] + '</a></li>';
+    list += '>' + data[i][0] + '</a><div class="dot';
+    if(data[i][2]){
+      list += ' dot-active';
+    } else {
+      list += ' dot-away';
+    }
+    list += '"></div></li>';
   }
   document.getElementById("usersList").innerHTML = list;
   document.getElementById("inlineUsersList").innerHTML = list;
@@ -189,6 +197,10 @@ function sendMessage(){
       $('#chatBox').addClass("error");
     }
   }
+}
+
+function updateStatus(){
+  socket.emit('status', {status: isActive});
 }
 
 function updateName(data){
@@ -249,7 +261,7 @@ var reverseEntityMap = {
   "&gt;" : ">",
   '&quot;' : '"',
   '&#39;' : "'",
-  '&#x2F;' : "/" 
+  '&#x2F;' : "/"
 };
 
 function reverseEscapeHtml(string) {
