@@ -41,7 +41,7 @@ app.post('/gitpull', function(req, res) {
   exec("git reset --hard HEAD", puts);
   exec("git pull", puts);
   var arr = req.body.commits[0].modified;
-  if((arr.join(',').indexOf("app.min.js") > -1) || (arr.join(',').indexOf("app.min.css") > -1)){
+  if((arr.join(',').indexOf("app.min.js") > -1) || (arr.join(',').indexOf("app.min.css") > -1) || (arr.join(',').indexOf("index.ejs") > -1)){
     io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE COMPLETE, BROWSER RELOAD IS NECCESARY.</span>'});
   } else {
     io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE COMPLETE, BROWSER RELOAD IS NOT NECCESARY.</span>'});
