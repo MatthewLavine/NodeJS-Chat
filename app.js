@@ -12,7 +12,7 @@ var sys = require('sys')
 var exec = require('child_process').exec;
 
 app.set("view options", {layout: false});
-app.use(require('connect').bodyParser());
+app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
 process.on('SIGINT', function() {
@@ -40,9 +40,11 @@ app.post('/gitpull', function(req, res) {
   function puts(error, stdout, stderr) {sys.puts(stdout)}
   exec("git reset --hard HEAD", puts);
   exec("git pull", puts);
-  console.log('Modified:');
-  console.log(req.body.commits[0].modified);
-  io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE COMPLETE, BROWSER RELOAD MAY BE NECCESARY.</span>'});
+  if((arr.join(',').indexOf("app.min.js") > -1) || (arr.join(',').indexOf("app.min.css") > -1)){
+    io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE COMPLETE, BROWSER RELOAD IS NECCESARY.</span>'});
+  } else {
+    io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE COMPLETE, BROWSER RELOAD IS NOT NECCESARY.</span>'});
+  }
 });
 
 app.get('*', function(req, res) {

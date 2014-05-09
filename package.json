@@ -9,7 +9,6 @@
     "ejs" : "1.0.0",
     "bbcode" : "0.1.x",
     "grunt" : "0.4.x",
-    "connect" : "latest",
     "grunt-contrib-uglify" : "latest",
     "grunt-contrib-jshint" : "latest",
     "grunt-contrib-watch" : "latest",
