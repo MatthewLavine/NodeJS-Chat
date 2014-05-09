@@ -12,6 +12,7 @@ var sys = require('sys')
 var exec = require('child_process').exec;
 
 app.set("view options", {layout: false});
+app.use(require('connect').bodyParser());
 app.use(express.static(__dirname + '/public'));
 
 process.on('SIGINT', function() {
