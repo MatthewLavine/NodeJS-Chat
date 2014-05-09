@@ -188,6 +188,14 @@ io.sockets.on('connection', function (socket) {
     socket.emit('annouce', {message : help});
   }
 
+  function multiArrayIndex(arr, item){
+    for(var i = 0; i < arr.length; i++) {
+      if(arr[i].toString() == item.toString()) {
+          return i;
+       }
+     }
+  }
+
   //Set name and notify clients
   sendHelp();
   var name = 'Guest' + Math.floor(100 + Math.random() * 900);
@@ -208,8 +216,8 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('status', function (data) {
-    removeItem(users, [name, socket.id, !data.status]);
-    users.push([name, socket.id, data.status]);
+    var index = multiArrayIndex(users, [name, socket.id, !data.status]);
+    users[index][2] = data.status;
     io.sockets.emit('users', users);
   });
 
