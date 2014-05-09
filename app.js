@@ -41,7 +41,7 @@ app.post('/gitpull', function(req, res) {
   exec("git reset --hard HEAD", puts);
   exec("git pull", puts);
   console.log('Modified:');
-  console.log(req.body.commits.modified);
+  console.log(req.body.commits[0].modified);
   io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE COMPLETE, BROWSER RELOAD MAY BE NECCESARY.</span>'});
 });
 
