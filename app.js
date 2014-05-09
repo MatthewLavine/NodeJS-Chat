@@ -64,6 +64,8 @@ process.stdin.on('data', function (chunk) {
 });
 
 io.sockets.on('connection', function (socket) {
+  var name = '';
+
   function broadcast(data) {
     io.sockets.emit('annouce', {message : data});
   }
@@ -204,15 +206,20 @@ io.sockets.on('connection', function (socket) {
      }
   }
 
-  //Set name and notify clients
-  sendHelp();
-  var name = 'Guest' + Math.floor(100 + Math.random() * 900);
-  broadcast('<span class="serverMessage">' + name + ' has entered chat.</span>');
-  users.push([name, socket.id, true]);
-  io.sockets.emit('users', users);
-  socket.emit('name', {name : name});
-
   //Begin Handlers
+  socket.on('config', function (data){
+    sendHelp();
+    if(data.name == ''){
+      name = 'Guest' + Math.floor(100 + Math.random() * 900);
+    } else {
+      name = data.name;
+    }
+    broadcast('<span class="serverMessage">' + name + ' has entered chat.</span>');
+    users.push([name, socket.id, true]);
+    io.sockets.emit('users', users);
+    socket.emit('name', {name : name});
+  });
+
   socket.on('broadcast', function (data) {
     if(data.message[0] == "/") {
       parseServerCommand(data);

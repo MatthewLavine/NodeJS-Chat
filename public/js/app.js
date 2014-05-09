@@ -224,15 +224,12 @@ $('#saveNick').click(function(){
     notify('Nick saved!', true);
 });
 
-function rememberNick(){
-  if($.cookie('nick') !== undefined){
-    document.getElementById("chatBox").value = '/nick ' + $.cookie('nick');
-    sendMessage();
-  }
-}
-
 socket.on('connect', function(data){
-  rememberNick();
+  if($.cookie('nick') !== undefined){
+    socket.emit('config', {name: $.cookie('nick')});
+  } else {
+    socket.emit('config', {name: ''}); //Request Guest Identifier
+  }
 });
 
 socket.on('broadcast', function (data) {
