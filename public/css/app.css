@@ -23,12 +23,12 @@ body {
 }
 
 .dot {
-	width: 10px;
-	height: 10px;
+	width: 8px;
+	height: 8px;
 	border-radius: 50%;
 	float:right;
 	position:relative;
-	top:8px;
+	top:9px;
 	margin-left:10px;
 }
 
