@@ -222,28 +222,30 @@ io.sockets.on('connection', function (socket) {
     users.push([name, socket.id, true]);
     io.sockets.emit('users', users);
     socket.emit('name', {name : name});
-  });
 
-  socket.on('broadcast', function (data) {
-    if(data.message[0] == "/") {
-      parseServerCommand(data);
-    } else {
-      bbcode.parse(escapeHtml(data.message), function(content){
-        io.sockets.emit('broadcast', {client : name, message : content});
-      });
-    }
-  });
+    //All Other Handlers
 
-  socket.on('status', function (data) {
-    var index = multiArrayIndex(users, [name, socket.id, !data.status]);
-    if(index == -1){console.log('missing user: ' + name);return;}
-    users[index][2] = data.status;
-    io.sockets.emit('users', users);
-  });
+    socket.on('broadcast', function (data) {
+      if(data.message[0] == "/") {
+        parseServerCommand(data);
+      } else {
+        bbcode.parse(escapeHtml(data.message), function(content){
+          io.sockets.emit('broadcast', {client : name, message : content});
+        });
+      }
+    });
 
-  socket.on('disconnect', function (data) {
-    removeItem(users, [name, socket.id]);
-    io.sockets.emit('users', users);
-    broadcast('<span class="serverMessage">' + name + ' has exited chat.</span>');
+    socket.on('status', function (data) {
+      var index = multiArrayIndex(users, [name, socket.id, !data.status]);
+      if(index == -1){console.log('missing user: ' + name);return;}
+      users[index][2] = data.status;
+      io.sockets.emit('users', users);
+    });
+
+    socket.on('disconnect', function (data) {
+      removeItem(users, [name, socket.id]);
+      io.sockets.emit('users', users);
+      broadcast('<span class="serverMessage">' + name + ' has exited chat.</span>');
+    });
   });
 });
