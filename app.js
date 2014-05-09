@@ -35,6 +35,7 @@ function gracefulShutdown(kill){
 app.post('/gitpull', function(req, res) {
   //GitHub push hook
   res.end();
+  io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE INITIATED...</span>'});
   function puts(error, stdout, stderr) {sys.puts(stdout)}
   exec("git reset --hard HEAD", puts);
   exec("git pull", puts);
