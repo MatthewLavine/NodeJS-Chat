@@ -204,6 +204,7 @@ io.sockets.on('connection', function (socket) {
           return i;
        }
      }
+     return -1;
   }
 
   //Begin Handlers
@@ -235,6 +236,7 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('status', function (data) {
     var index = multiArrayIndex(users, [name, socket.id, !data.status]);
+    if(index == -1){console.log('missing user: ' + name;return;}
     users[index][2] = data.status;
     io.sockets.emit('users', users);
   });
