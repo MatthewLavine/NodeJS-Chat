@@ -205,7 +205,7 @@ function updateStatus(){
 
 function updateName(data){
   $(nickname).html(data.name);
-  $('.tab-bar-section').children('.title').html($('.tab-bar-section').children('.title').html() + ' - ' + data.name);
+  $('.tab-bar-section').children('.title').html('HardOrange Chat - ' + data.name);
 }
 
 $('#saveNick').click(function(){
