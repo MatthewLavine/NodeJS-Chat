@@ -230,6 +230,17 @@ socket.on('connect', function(data){
   } else {
     socket.emit('config', {name: ''}); //Request Guest Identifier
   }
+
+  $(document).keydown(function(e) {
+    if(e.which == 13) { //Enter Key
+      if(modalOpen){
+        saveNick();
+      } else {
+        sendMessage();
+      }
+    }
+  });
+  
 });
 
 socket.on('broadcast', function (data) {
@@ -252,16 +263,6 @@ socket.on('disconnect', function (data) {
   chat('SERVER', '<span class="serverMessage">You have disconnected. Type /connect to reconnect.</span>');
   updateUsers([]);
   //setTimeout(function(){location.reload();}, 1000); //LiveReload Substitute
-});
-
-$(document).keydown(function(e) {
-  if(e.which == 13) { //Enter Key
-    if(modalOpen){
-      saveNick();
-    } else {
-      sendMessage();
-    }
-  }
 });
 
 var reverseEntityMap = {
