@@ -90,10 +90,10 @@ function makeFancy(str){
     return tempStr;
 }
 
-function chat(source, data) {
+function chat(source, data, forcename) {
   var time = moment().format('HH:mm');
   var newSource;
-  if(source == lastUser && lastUserMsgCount < 15){
+  if(forcename === undefined && (source == lastUser && lastUserMsgCount < 15)){
     lastUserMsgCount++;
     newSource = '';
   } else {
@@ -240,11 +240,15 @@ socket.on('connect', function(data){
       }
     }
   });
-  
+
 });
 
 socket.on('broadcast', function (data) {
   chat(data.client, data.message);
+});
+
+socket.on('pm', function (data) {
+  chat(data.client, data.message, true);
 });
 
 socket.on('annouce', function (data) {

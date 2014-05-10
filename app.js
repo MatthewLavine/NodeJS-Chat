@@ -163,7 +163,7 @@ io.sockets.on('connection', function (socket) {
     }
     data = '<span class="pm">&lt;to ' + dest + '&gt; ' + data + '</span';
     io.sockets.socket(findSocket(dest)).emit('broadcast', {client : name, message : data});
-    socket.emit('broadcast', {client : name, message : data});
+    socket.emit('pm', {client : name, message : data});
   }
 
   function updateName(data){
