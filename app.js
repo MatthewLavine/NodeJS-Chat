@@ -176,6 +176,10 @@ io.sockets.on('connection', function (socket) {
       socket.emit('annouce', {message : "<span class='serverMessage'>That nick is reserved!</span>"});
       return;
     }
+    if(data.toLowerCase().length > 25){
+      socket.emit('annouce', {message : "<span class='serverMessage'>That nick is too long!</span>"});
+      return;
+    }
     oldName = name;
     name = data;
     removeItem(users, [oldName, socket.id]);
