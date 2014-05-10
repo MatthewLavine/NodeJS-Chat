@@ -167,6 +167,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function updateName(data){
+    data = escapeHtml(data);
     if(findUser(data)){
       socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data + "' is taken!</span>"});
       return;
