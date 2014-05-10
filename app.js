@@ -167,7 +167,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function updateName(data){
-    data = escapeHtml(data);
+    data = escapeHtml(data).trim();
     if(findUser(data)){
       socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data + "' is taken!</span>"});
       return;
@@ -227,7 +227,7 @@ io.sockets.on('connection', function (socket) {
     //All Other Handlers
 
     socket.on('broadcast', function (data) {
-      if(data === undefined || data.message === undefined || data.message === null){
+      if(data === undefined || data === null || data.message === undefined || data.message === null){
         console.log('Undefined Message Received');
         return;
       }
