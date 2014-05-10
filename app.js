@@ -227,7 +227,7 @@ io.sockets.on('connection', function (socket) {
     //All Other Handlers
 
     socket.on('broadcast', function (data) {
-      if(data === undefined){
+      if(data === undefined || data.message === undefined){
         console.log('Undefined Message Received');
         return;
       }
