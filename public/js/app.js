@@ -8,6 +8,7 @@ var sounds = false;
 var lastUser = '';
 var lastUserMsgCount = 0;
 var usersListOn = false;
+var alert = new Audio('sounds/alert.mp3');
 
 $(document).ready(function () {
     updateContainer();
@@ -130,7 +131,6 @@ function chat(source, data, forcename) {
   $('.chatTime').last().css( {"height" : height});
   $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
   if(!isActive){
-    var alert = new Audio('sounds/alert.mp3');
     playSound(alert);
     document.title = 'New Message!';
     if(data.toLowerCase().indexOf($(nickname).html().toLowerCase()) > -1){
