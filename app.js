@@ -227,6 +227,10 @@ io.sockets.on('connection', function (socket) {
     //All Other Handlers
 
     socket.on('broadcast', function (data) {
+      if(data === undefined){
+        console.log('Undefined Message Received');
+        return;
+      }
       if(data.message[0] == "/") {
         parseServerCommand(data);
       } else {
