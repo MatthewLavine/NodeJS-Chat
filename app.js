@@ -33,9 +33,12 @@ function gracefulShutdown(kill){
   setTimeout(function(){kill()}, 10000);
 }
 
+/* Thanks Reddit
 app.post('/gitpull', function(req, res) {
   //GitHub push hook
   res.end();
+  if()
+  config.secret;
   io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE INITIATED...</span>'});
   function puts(error, stdout, stderr) {sys.puts(stdout)}
   exec("git reset --hard HEAD", puts);
@@ -47,6 +50,7 @@ app.post('/gitpull', function(req, res) {
     io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE COMPLETE, BROWSER RELOAD IS NOT NECCESARY.</span>'});
   }
 });
+*/
 
 app.get('*', function(req, res) {
   res.render('index.ejs', {
