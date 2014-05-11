@@ -184,6 +184,10 @@ io.sockets.on('connection', function (socket) {
       socket.emit('annouce', {message : "<span class='serverMessage'>That nick is too long!</span>"});
       return;
     }
+    if(data.toLowerCase().length == 0){
+      socket.emit('annouce', {message : "<span class='serverMessage'>That nick is too short!</span>"});
+      return;
+    }
     oldName = name;
     name = escapeHtml(data);
     removeItem(users, [oldName, socket.id]);
@@ -224,7 +228,7 @@ io.sockets.on('connection', function (socket) {
       console.log('Malformed Config Packet');
       return;
     }
-    
+
     if(data.name != ''){
       if(findUser(data.name)){
         socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data.name + "' is taken!</span>"});
@@ -242,6 +246,11 @@ io.sockets.on('connection', function (socket) {
     socket.on('broadcast', function (data) {
       if(data === undefined || data === null || data.message === undefined || data.message === null){
         console.log('Malformed Broadcast Packet');
+        return;
+      }
+      if(data.message.length > 500) {
+        var help = "<span class='serverMessage'>Your message was too long (500 character limit).</span>";
+        socket.emit('annouce', {message : help});
         return;
       }
       if(data.message[0] == "/") {
