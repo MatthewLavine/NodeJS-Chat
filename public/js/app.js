@@ -206,7 +206,9 @@ function sendMessage(){
   }
 
   if(document.getElementById("chatBox").value.trim() !== ""){
-      $('#chatBox').removeClass("error");
+      while($('#chatBox').hasClass("error")){
+        $('#chatBox').removeClass("error");
+      }
 
     if(document.getElementById("chatBox").value.trim() == "/clear") {
       clearLog();
