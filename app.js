@@ -33,7 +33,7 @@ function gracefulShutdown(kill){
   io.sockets.emit('annouce', {message : '<span class="adminMessage">RESTARTING IN 10 SECONDS!</span>'});
   setTimeout(function(){kill()}, 10000);
 }
-
+/*
 app.post('/gitpull', function(req, res) {
   var ip = req.connection.remoteAddress.split('.')
   if(ip[0] != '192' && ip[1] != '30') { //Github Servers
@@ -51,7 +51,7 @@ app.post('/gitpull', function(req, res) {
     io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE COMPLETE, BROWSER RELOAD IS NOT NECCESARY.</span>'});
   }
 });
-
+*/
 app.get('*', function(req, res) {
   res.render('index.ejs', {
    ip: ip
