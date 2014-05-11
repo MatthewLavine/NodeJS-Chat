@@ -233,7 +233,7 @@ function updateName(data){
 }
 
 $('#saveNick').click(function(){
-  $.cookie('nick', $(nickname).html());
+  $.cookie('nick', $(nickname).html(), { expires: 365 });
     notify('Nick saved!', true);
 });
 
