@@ -240,7 +240,7 @@ io.sockets.on('connection', function (socket) {
   var didConfig = false;
   socket.on('config', function (data){
     didConfig = true;
-    if(didconfig){
+    if(didConfig){
       return;
     }
     if(data === undefined || data === null || data.name === undefined || data.name === null){
