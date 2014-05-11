@@ -231,12 +231,13 @@ io.sockets.on('connection', function (socket) {
       return;
     }
     if(data.name != ''){
+      if(typeof data.name != 'string') {
+        socket.emit('annouce', {message : "<span class='serverMessage'>That nick is not a string!</span>"});
+        return;
+      }
       if(data.name.toLowerCase() == "admin" || data.name.toLowerCase() == "server"){
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is reserved!</span>"});
         return;
-      }
-      if(findUser(data.name)){
-        socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data.name + "' is taken!</span>"});
       }
       if(data.name.toLowerCase().length > 25){
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is too long!</span>"});
@@ -246,9 +247,9 @@ io.sockets.on('connection', function (socket) {
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is too short!</span>"});
         return;
       }
-
-
-      else {
+      if(findUser(data.name)){
+        socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data.name + "' is taken!</span>"});
+      } else {
         name = escapeHtml(data.name);
       }
     }
