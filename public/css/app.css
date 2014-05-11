@@ -96,6 +96,7 @@ a {
 
 .chatLog img{
 	max-width:400px;
+	max-height:400px;
 }
 
 .chatLog::-webkit-scrollbar {
