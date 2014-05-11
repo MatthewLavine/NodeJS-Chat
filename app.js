@@ -247,7 +247,7 @@ io.sockets.on('connection', function (socket) {
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is not a string!</span>"});
         return;
       }
-      if(!isLetter(data)){
+      if(!isLetter(data.name)){
         socket.emit('annouce', {message : "<span class='serverMessage'>No special characters in Nicks!</span>"});
         return;
       }
