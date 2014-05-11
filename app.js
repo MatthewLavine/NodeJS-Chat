@@ -64,8 +64,95 @@ process.stdin.resume();
 process.stdin.setEncoding('utf8');
 
 process.stdin.on('data', function (chunk) {
- io.sockets.emit('annouce', {message : '<span class="adminMessage">' + chunk.toUpperCase() + '</span>'});
+  chunk = chomp(chunk)
+  if(chunk[0] == "/") {
+    parseAdminCommand(chunk);
+  } else {
+    io.sockets.emit('annouce', {message : '<span class="adminMessage">' + chunk.toUpperCase() + '</span>'});
+  }
 });
+
+function chomp(raw_text) {
+  return raw_text.replace(/(\n|\r)+$/, '');
+}
+
+function findSocket(user) {
+  for(var i = users.length; i--;) {
+    if(users[i][0] == user) {
+      return users[i][1];
+    }
+  }
+  return 0;
+}
+
+function parseAdminCommand(data) {
+    var res = data.trim().split(" ");
+
+    if(res[0].toLowerCase() == "/kick" && res.length == 2){
+      kick(res[1]);
+      return;
+    }
+
+    if(res[0].toLowerCase() == "/restart" && res.length == 1){
+      process.kill(process.pid, 'SIGUSR2');
+      return;
+    }
+
+    if(res[0].toLowerCase() == "/shutdown" && res.length == 1){
+      console.log( "\nShutting down from manual SIGINT (/shutdown), NOW." );
+      io.sockets.emit('annouce', {message : '<span class="adminMessage">SHUTTING DOWN, NOW!</span>'});
+      process.exit();
+      return;
+    }
+
+    console.log('Unknown command \'' + data + '\'');
+    console.log('Available commands are: \n  /kick user\n  message\n  /restart\n  /shutdown\n');
+}
+
+function kick(data) {
+  if(!findUser(data)) {
+    console.log('No such user \'' + data + '\'');
+    return;
+  }
+  var victim = io.sockets.socket(findSocket(data));
+  victim.emit('annouce', {message : '<span class="adminMessage">You have been kicked by the admin.</span>'});
+  removeItem(users, [data]);
+  victim.disconnect();
+  console.log('\'' + data + '\' has been kicked.');
+}
+
+
+var entityMap = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': '&quot;',
+  "'": '&#39;',
+  "/": '&#x2F;'
+};
+
+function escapeHtml(string) {
+  return String(string).replace(/[&<>"'\/]/g, function (s) {
+    return entityMap[s];
+  });
+}
+
+function removeItem(arr, item) {
+  for(var i = arr.length; i--;) {
+    if(arr[i][0].toString() === item[0].toString()) {
+      arr.splice(i, 1);
+    }
+  }
+}
+
+function findUser(user) {
+  for(var i = users.length; i--;) {
+    if(users[i][0] == user) {
+      return true;
+    }
+  }
+  return false;
+}
 
 io.sockets.on('connection', function (socket) {
   var name = 'Guest' + Math.floor(100 + Math.random() * 900);
@@ -119,47 +206,6 @@ io.sockets.on('connection', function (socket) {
 
     unrecognized(res[0]);
     sendHelp();
-  }
-
-  var entityMap = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': '&quot;',
-    "'": '&#39;',
-    "/": '&#x2F;'
-  };
-
-  function escapeHtml(string) {
-    return String(string).replace(/[&<>"'\/]/g, function (s) {
-      return entityMap[s];
-    });
-  }
-
-  function removeItem(arr, item) {
-    for(var i = arr.length; i--;) {
-      if(arr[i][0].toString() === item[0].toString()) {
-        arr.splice(i, 1);
-      }
-    }
-  }
-
-  function findUser(user) {
-    for(var i = users.length; i--;) {
-      if(users[i][0] == user) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function findSocket(user) {
-    for(var i = users.length; i--;) {
-      if(users[i][0] == user) {
-        return users[i][1];
-      }
-    }
-    return 0;
   }
 
   function pm(dest, data){
