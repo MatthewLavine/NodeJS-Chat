@@ -35,8 +35,9 @@ function gracefulShutdown(kill){
 }
 
 app.post('/gitpull', function(req, res) {
-  //GitHub push hook
-  console.log(req.connection.remoteAddress);
+  if(req.connection.remoteAddress.slice(0,7) != '192.30') { //Github Servers
+    return;
+  }
   res.end();
   io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE INITIATED...</span>'});
   function puts(error, stdout, stderr) {sys.puts(stdout)}
