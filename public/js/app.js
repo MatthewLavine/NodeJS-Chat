@@ -123,6 +123,7 @@ function chat(source, data, forcename) {
     </div> \
     ');
   linkUsers();
+  truncateHistory();
   if(source != 'SERVER'){
     notify(source + ': ' + data.replace(/(<([^>]+)>)/ig,""), false);
   }
@@ -140,6 +141,16 @@ function chat(source, data, forcename) {
         notify('You have been mentioned by ' + source + '!', false);
       }
     }
+  }
+}
+
+function truncateHistory(){
+  var messageHistoryLimit = 200;
+  var logs = $('#chatLog').children();
+  if(logs.length <= messageHistoryLimit){
+    return;
+  } else {
+    logs.slice(0,$('#chatLog').children().length-messageHistoryLimit).remove();
   }
 }
 
