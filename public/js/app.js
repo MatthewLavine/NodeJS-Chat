@@ -150,7 +150,7 @@ function truncateHistory(){
   if(logs.length <= messageHistoryLimit){
     return;
   } else {
-    logs.slice(0,$('#chatLog').children().length-messageHistoryLimit).remove();
+    logs.slice(0,$('#chatLog').children().length-messageHistoryLimit-1).remove();
   }
 }
 
