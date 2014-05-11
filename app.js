@@ -261,7 +261,7 @@ io.sockets.on('connection', function (socket) {
     //All Other Handlers
 
     socket.on('broadcast', function (data) {
-      if(data === undefined || data === null || data.message === undefined || data.message === null){
+      if(data === undefined || data === null || data.message === undefined || data.message === null || typeof data.message != 'string'){
         console.log('Malformed Broadcast Packet');
         return;
       }
