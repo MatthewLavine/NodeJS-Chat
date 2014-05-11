@@ -70,6 +70,8 @@ process.stdin.on('data', function (chunk) {
 io.sockets.on('connection', function (socket) {
   var name = 'Guest' + Math.floor(100 + Math.random() * 900);
   var lastMessage = moment();
+  var rateLimitWarns = 0;
+  var banFrom = moment();
 
   function broadcast(data) {
     io.sockets.emit('annouce', {message : data});
@@ -295,12 +297,22 @@ io.sockets.on('connection', function (socket) {
         socket.emit('annouce', {message : help});
         return;
       }
-      if(moment().diff(lastMessage, 'seconds') < 1) {
-        var help = "<span class='serverMessage'>You are sending too many messages!</span>";
+      if(moment().diff(banFrom, 'seconds') <= 30 && rateLimitWarns == 3){
+        var help = "<span class='serverMessage'>You are sending too many messages, 30 second ban!</span>";
         socket.emit('annouce', {message : help});
         return;
       }
+      if(moment().diff(lastMessage, 'seconds') < 0.5) {
+        var help = "<span class='serverMessage'>You are sending too many messages!</span>";
+        socket.emit('annouce', {message : help});
+        rateLimitWarns++;
+        if(rateLimitWarns == 3){
+          banFrom = moment();
+        }
+        return;
+      }
       lastMessage = moment();
+      rateLimitWarns=0;
       if(data.message[0] == "/") {
         parseServerCommand(data);
       } else {
