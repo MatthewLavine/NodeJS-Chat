@@ -173,6 +173,14 @@ io.sockets.on('connection', function (socket) {
 
   function updateName(data){
     data = escapeHtml(data).trim();
+    if(typeof data.name != 'string') {
+      socket.emit('annouce', {message : "<span class='serverMessage'>That nick is not a string!</span>"});
+      return;
+    }
+    if(!isLetter(data)){
+      socket.emit('annouce', {message : "<span class='serverMessage'>No special characters in Nicks!</span>"});
+      return;
+    }
     if(findUser(data)){
       socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data + "' is taken!</span>"});
       return;
@@ -221,6 +229,11 @@ io.sockets.on('connection', function (socket) {
      return -1;
   }
 
+  function isLetter(s)
+  {
+    return s.match("^[a-zA-Z\(\)]+$");
+  }
+
   //Begin Handlers
   sendHelp();
 
@@ -232,6 +245,10 @@ io.sockets.on('connection', function (socket) {
     if(data.name != ''){
       if(typeof data.name != 'string') {
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is not a string!</span>"});
+        return;
+      }
+      if(!isLetter(data)){
+        socket.emit('annouce', {message : "<span class='serverMessage'>No special characters in Nicks!</span>"});
         return;
       }
       if(data.name.toLowerCase() == "admin" || data.name.toLowerCase() == "server"){
