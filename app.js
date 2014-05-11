@@ -4,6 +4,7 @@ var port = config.port;
 var express = require('express');
 var app = express();
 var server = app.listen(port);
+var moment = require('moment');
 var ejs = require('ejs');
 var bbcode = require('bbcode');
 var io = require('socket.io').listen(server);
@@ -69,6 +70,7 @@ process.stdin.on('data', function (chunk) {
 
 io.sockets.on('connection', function (socket) {
   var name = 'Guest' + Math.floor(100 + Math.random() * 900);
+  var lastMessage = moment();
 
   function broadcast(data) {
     io.sockets.emit('annouce', {message : data});
@@ -253,6 +255,12 @@ io.sockets.on('connection', function (socket) {
         socket.emit('annouce', {message : help});
         return;
       }
+      if(moment().diff(lastMessage, 'seconds') < 1) {
+        var help = "<span class='serverMessage'>You are sending too many messages!</span>";
+        socket.emit('annouce', {message : help});
+        return;
+      }
+      lastMessage = moment();
       if(data.message[0] == "/") {
         parseServerCommand(data);
       } else {
