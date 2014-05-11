@@ -36,9 +36,15 @@ function gracefulShutdown(kill){
 }
 
 app.post('/gitpull', function(req, res) {
-  res.end();
   var parsedUrl = url.parse(req.url, true);
   console.log(parsedUrl.query['secret_key']);
+  if(parsedUrl.query['secret_key'] != config.secret_key) {
+      console.log("[warning] Unauthorized request " + req.url);
+      res.writeHead(401, "Not Authorized", {'Content-Type': 'text/html'});
+      res.end('401 - Not Authorized');
+      return;
+  }
+  res.end();
   io.sockets.emit('annouce', {message : '<span class="adminMessage">SYSTEM UPDATE INITIATED...</span>'});
   function puts(error, stdout, stderr) {sys.puts(stdout)}
   exec("git reset --hard HEAD", puts);
