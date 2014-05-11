@@ -178,7 +178,7 @@ io.sockets.on('connection', function (socket) {
       return;
     }
     if(!isLetter(data)){
-      socket.emit('annouce', {message : "<span class='serverMessage'>No special characters in Nicks!</span>"});
+      socket.emit('annouce', {message : "<span class='serverMessage'>No special characters or spaces in Nicks!</span>"});
       return;
     }
     if(findUser(data)){
@@ -255,7 +255,7 @@ io.sockets.on('connection', function (socket) {
         error = true;
       }
       if(!error && !isLetter(data.name)){
-        socket.emit('annouce', {message : "<span class='serverMessage'>No special characters in Nicks!</span>"});
+        socket.emit('annouce', {message : "<span class='serverMessage'>No special characters or spaces in Nicks!</span>"});
         error = true;
       }
       if(!error && data.name.toLowerCase() == "admin" || data.name.toLowerCase() == "server"){
