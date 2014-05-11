@@ -220,8 +220,11 @@ io.sockets.on('connection', function (socket) {
   sendHelp();
 
   socket.on('config', function (data){
-    try {
-
+    if(data === undefined || data === null || data.name === undefined || data.name === null){
+      console.log('Malformed Config Packet');
+      return;
+    }
+    
     if(data.name != ''){
       if(findUser(data.name)){
         socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data.name + "' is taken!</span>"});
@@ -238,7 +241,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('broadcast', function (data) {
       if(data === undefined || data === null || data.message === undefined || data.message === null){
-        console.log('Undefined Message Received');
+        console.log('Malformed Broadcast Packet');
         return;
       }
       if(data.message[0] == "/") {
@@ -251,6 +254,10 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('status', function (data) {
+      if(data === undefined || data === null || data.status === undefined || data.status === null){
+        console.log('Malformed Status Packet');
+        return;
+      }
       var index = multiArrayIndex(users, [name, socket.id, !data.status]);
       if(index == -1){console.log('missing user: ' + name);return;}
       users[index][2] = data.status;
@@ -262,8 +269,5 @@ io.sockets.on('connection', function (socket) {
       io.sockets.emit('users', users);
       broadcast('<span class="serverMessage">' + name + ' has exited chat.</span>');
     });
-  } catch (err) {
-    console.log('Malformed Packet');
-  }
   });
 });
