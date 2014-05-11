@@ -230,11 +230,25 @@ io.sockets.on('connection', function (socket) {
       console.log('Malformed Config Packet');
       return;
     }
-
     if(data.name != ''){
+      if(data.name.toLowerCase() == "admin" || data.name.toLowerCase() == "server"){
+        socket.emit('annouce', {message : "<span class='serverMessage'>That nick is reserved!</span>"});
+        return;
+      }
       if(findUser(data.name)){
         socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data.name + "' is taken!</span>"});
-      } else {
+      }
+      if(data.name.toLowerCase().length > 25){
+        socket.emit('annouce', {message : "<span class='serverMessage'>That nick is too long!</span>"});
+        return;
+      }
+      if(data.name.toLowerCase().length == 0){
+        socket.emit('annouce', {message : "<span class='serverMessage'>That nick is too short!</span>"});
+        return;
+      }
+
+
+      else {
         name = escapeHtml(data.name);
       }
     }
