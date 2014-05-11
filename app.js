@@ -242,30 +242,33 @@ io.sockets.on('connection', function (socket) {
       console.log('Malformed Config Packet');
       return;
     }
+    var error = false;
     if(data.name != ''){
       if(typeof data.name != 'string') {
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is not a string!</span>"});
-        return;
+        error = true;
       }
-      if(!isLetter(data.name)){
+      if(!error && !isLetter(data.name)){
         socket.emit('annouce', {message : "<span class='serverMessage'>No special characters in Nicks!</span>"});
-        return;
+        error = true;
       }
-      if(data.name.toLowerCase() == "admin" || data.name.toLowerCase() == "server"){
+      if(!error && data.name.toLowerCase() == "admin" || data.name.toLowerCase() == "server"){
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is reserved!</span>"});
-        return;
+        error = true;
       }
-      if(data.name.toLowerCase().length > 25){
+      if(!error && data.name.toLowerCase().length > 25){
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is too long!</span>"});
-        return;
+        error = true;
       }
-      if(data.name.toLowerCase().length == 0){
+      if(!error && data.name.toLowerCase().length == 0){
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is too short!</span>"});
-        return;
+        error = true;
       }
-      if(findUser(data.name)){
+      if(!error && findUser(data.name)){
         socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data.name + "' is taken!</span>"});
-      } else {
+        error = true;
+      }
+      if(!error) {
         name = escapeHtml(data.name);
       }
     }
