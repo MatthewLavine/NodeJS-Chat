@@ -6,6 +6,7 @@ var app = express();
 var server = app.listen(port);
 var moment = require('moment');
 var ejs = require('ejs');
+var url = require('url');
 var bbcode = require('bbcode');
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
