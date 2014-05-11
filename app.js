@@ -164,7 +164,7 @@ function findUser(user) {
 }
 
 io.sockets.on('connection', function (socket) {
-  var name = 'Guest' + Math.floor(100 + Math.random() * 900);
+  var name = '';
   var lastMessage = moment();
   var rateLimitWarns = 0;
   var banFrom = moment();
@@ -305,6 +305,9 @@ io.sockets.on('connection', function (socket) {
       console.log('Malformed Config Packet');
       return;
     }
+    do {
+      name = 'Guest' + Math.floor(1000 + Math.random() * 9000);
+    } while (findUser(name));
     var error = false;
     if(data.name != ''){
       if(typeof data.name != 'string') {
