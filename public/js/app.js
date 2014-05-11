@@ -7,7 +7,6 @@ var modalOpen = false;
 var sounds = false;
 var lastUser = '';
 var lastUserMsgCount = 0;
-var usersListOn = false;
 var alert = new Audio('sounds/alert.mp3');
 
 $(document).ready(function () {
@@ -22,19 +21,7 @@ function updateContainer() {
   $('.chatLog').animate({
     height: $(window).height() - 125
   }, 1000, function(){
-    $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
-      setUsersList();
-  });
-}
-
-function setUsersList(){
-  if(!usersListOn){
-    usersListOn = true;
-    $('.main-section').append('<div class="usersListContainer show-for-large-up"><ul class="noList" id="inlineUsersList"><li><label>Online Users</label></li></ul></div>');
-  }
-  $('.usersListContainer').css({
-    'left' :  $('#chatLog').position().left + $('#chatLog').width() - $('.usersListContainer').width() + 16,
-    'top' : $('#chatLog').position().top + ($('#chatLog').outerHeight()-$('#chatLog').height())*2 + 8
+    $('#history').scrollTop($('#history')[0].scrollHeight);
   });
 }
 
@@ -109,7 +96,7 @@ function chat(source, data, forcename) {
     newSource = '<span class="serverMessage">' + newSource + '</span>';
   }
   data = makeFancy(data);
-  $('#chatLog').append(' \
+  $('#history').append(' \
     <div class="row"> \
       <div class="large-1 columns show-for-large-up right-seperator"> \
         <div class="chatTime full-height">' + '' + time + '' + '</div> \
@@ -130,7 +117,7 @@ function chat(source, data, forcename) {
   var height = $('.chatMessage').last().height();
   $('.chatName').last().css( {"height" : height});
   $('.chatTime').last().css( {"height" : height});
-  $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+  $('#history').scrollTop($('#history')[0].scrollHeight);
   if(!isActive){
     playSound(alert);
     document.title = 'New Message!';
@@ -146,22 +133,21 @@ function chat(source, data, forcename) {
 
 function truncateHistory(){
   var messageHistoryLimit = 200;
-  var logs = $('#chatLog').children();
+  var logs = $('#history').children(".row");
   if(logs.length <= messageHistoryLimit){
     return;
   } else {
-    logs.slice(0,$('#chatLog').children().length-messageHistoryLimit-1).remove();
+    logs.slice(0,$('#history').children().length-messageHistoryLimit-1).remove();
   }
 }
 
 function clearLog(){
-  $('#chatLog').html('');
+  $('#history').children(".row").remove();
   lastUser = '';
   lastUserMsgCount = 0;
 }
 
 function updateUsers(data) {
-  setUsersList();
   var list = "";
   list += '<li><label>Online Users</label></li>';
   for(var i in data) {
