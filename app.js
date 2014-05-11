@@ -185,7 +185,7 @@ io.sockets.on('connection', function (socket) {
       return;
     }
     oldName = name;
-    name = data;
+    name = escapeHtml(data);
     removeItem(users, [oldName, socket.id]);
     users.push([name, socket.id, true]);
     io.sockets.emit('users', users);
@@ -220,11 +220,13 @@ io.sockets.on('connection', function (socket) {
   sendHelp();
 
   socket.on('config', function (data){
+    try {
+
     if(data.name != ''){
       if(findUser(data.name)){
         socket.emit('annouce', {message : "<span class='serverMessage'>The nick '" + data.name + "' is taken!</span>"});
       } else {
-        name = data.name;
+        name = escapeHtml(data.name);
       }
     }
     broadcast('<span class="serverMessage">' + name + ' has entered chat.</span>');
@@ -260,5 +262,8 @@ io.sockets.on('connection', function (socket) {
       io.sockets.emit('users', users);
       broadcast('<span class="serverMessage">' + name + ' has exited chat.</span>');
     });
+  } catch (err) {
+    console.log('Malformed Packet');
+  }
   });
 });
