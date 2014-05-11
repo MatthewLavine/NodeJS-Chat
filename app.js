@@ -35,7 +35,8 @@ function gracefulShutdown(kill){
 }
 
 app.post('/gitpull', function(req, res) {
-  if(req.connection.remoteAddress.slice(0,7) != '192.30') { //Github Servers
+  var ip = req.connection.remoteAddress.split('.')
+  if(ip[0] != '192' && ip[1] != '30') { //Github Servers
     return;
   }
   res.end();
