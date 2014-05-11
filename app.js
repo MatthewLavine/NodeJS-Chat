@@ -173,7 +173,7 @@ io.sockets.on('connection', function (socket) {
 
   function updateName(data){
     data = escapeHtml(data).trim();
-    if(typeof data.name != 'string') {
+    if(typeof data != 'string') {
       socket.emit('annouce', {message : "<span class='serverMessage'>That nick is not a string!</span>"});
       return;
     }
