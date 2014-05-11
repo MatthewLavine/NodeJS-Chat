@@ -94,6 +94,10 @@ a {
 	overflow: -moz-scrollbars-none;
 }
 
+.chatLog img{
+	max-width:400px;
+}
+
 .chatLog::-webkit-scrollbar {
  display: none;
 }
