@@ -115,7 +115,7 @@ function kick(data) {
     return;
   }
   var victim = io.sockets.socket(findSocket(data));
-  victim.emit('annouce', {message : '<span class="adminMessage">You have been kicked by the admin.</span>'});
+  victim.emit('annouce', {message : '<span class="adminMessage">YOU HAVE BEEN KICKED BY THE ADMIN.</span>'});
   removeItem(users, [data]);
   victim.disconnect();
   console.log('\'' + data + '\' has been kicked.');
