@@ -237,7 +237,12 @@ io.sockets.on('connection', function (socket) {
   //Begin Handlers
   sendHelp();
 
+  var didConfig = false;
   socket.on('config', function (data){
+    didConfig = true;
+    if(didconfig){
+      return;
+    }
     if(data === undefined || data === null || data.name === undefined || data.name === null){
       console.log('Malformed Config Packet');
       return;
