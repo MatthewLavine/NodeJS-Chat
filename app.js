@@ -92,8 +92,8 @@ function findSocket(user) {
 function parseAdminCommand(data) {
     var res = data.trim().split(" ");
 
-    if(res[0].toLowerCase() == "/kick" && res.length == 2){
-      kick(res[1]);
+    if(res[0].toLowerCase() == "/kick" && res.length >= 2){
+      kick(res[1], res.slice(2,res.length).join(' '));
       return;
     }
 
@@ -110,16 +110,21 @@ function parseAdminCommand(data) {
     }
 
     console.log('Unknown command \'' + data + '\'');
-    console.log('Available commands are: \n  /kick user\n  message\n  /restart\n  /shutdown\n');
+    console.log('Available commands are: \n  /kick user reason\n  message\n  /restart\n  /shutdown\n');
 }
 
-function kick(data) {
+function kick(data, reason) {
   if(!findUser(data)) {
     console.log('No such user \'' + data + '\'');
     return;
   }
   var victim = io.sockets.socket(findSocket(data));
-  victim.emit('annouce', {message : '<span class="adminMessage">YOU HAVE BEEN KICKED BY THE ADMIN.</span>'});
+  var msg = '<span class="adminMessage">YOU HAVE BEEN KICKED BY THE ADMIN. ';
+  if(reason !== undefined && reason != null && reason != ''){
+    msg += 'REASON: ' + reason;
+  }
+  msg += '</span>';
+  victim.emit('annouce', {message : msg});
   removeItem(users, [data]);
   victim.disconnect();
   console.log('\'' + data + '\' has been kicked.');
