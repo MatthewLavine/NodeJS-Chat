@@ -37,7 +37,6 @@ function gracefulShutdown(kill){
 
 app.post('/gitpull', function(req, res) {
   var parsedUrl = url.parse(req.url, true);
-  console.log(parsedUrl.query['secret_key']);
   if(parsedUrl.query['secret_key'] != config.secret_key) {
       console.log("[warning] Unauthorized request " + req.url);
       res.writeHead(401, "Not Authorized", {'Content-Type': 'text/html'});
