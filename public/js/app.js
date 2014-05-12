@@ -118,15 +118,13 @@ function chat(source, data, forcename) {
   $('.chatName').last().css( {"height" : height});
   $('.chatTime').last().css( {"height" : height});
   $('#history').scrollTop($('#history')[0].scrollHeight);
-  if(!isActive){
+  if(!isActive && source != 'SERVER'){
     playSound(alert);
+    document.title = 'New Message!';
     if(data.toLowerCase().indexOf($(nickname).html().toLowerCase()) > -1){
       setTimeout(function(){playSound(alert);}, 6);
-      if(source != 'SERVER'){
-        document.title = 'New Message!';
-        document.title = 'You have been mentioned!';
-        notify('You have been mentioned by ' + source + '!', false);
-      }
+      document.title = 'You have been mentioned!';
+      notify('You have been mentioned by ' + source + '!', false);
     }
   }
 }
