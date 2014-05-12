@@ -98,8 +98,8 @@ function chat(source, data, forcename) {
   data = makeFancy(data);
   $('#history').append(' \
     <div class="row"> \
-      <div class="large-1 columns show-for-large-up"> \
-        <div class="chatTime full-height">' + '' + time + '' + '</div> \
+      <div class="large-1 columns show-for-large-up right-seperator" style="padding:0"> \
+        <div class="chatTime full-height">' + '' + time + '' + '&nbsp;&nbsp;</div> \
       </div> \
       <div class="small-4 medium-2 large-2 columns right-seperator"> \
          <div class="chatName full-height">' + newSource + '</div> \
