@@ -267,6 +267,7 @@ socket.on('name', function (data) {
 
 socket.on('disconnect', function (data) {
   chat('SERVER', '<span class="serverMessage">You have disconnected. Type /connect to reconnect.</span>');
+  $('#chatBox').removeClass("error");
   updateUsers([]);
   //setTimeout(function(){location.reload();}, 1000); //LiveReload Substitute
 });
