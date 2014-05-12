@@ -168,6 +168,8 @@ io.sockets.on('connection', function (socket) {
   var lastMessage = moment();
   var rateLimitWarns = 0;
   var banFrom = moment();
+  var currentRoom = '#chat.hardorange.org';
+  socket.join(currentRoom);
 
   function broadcast(data) {
     io.sockets.emit('annouce', {message : data});
@@ -204,8 +206,34 @@ io.sockets.on('connection', function (socket) {
       }
     }
 
+    if(res[0].toLowerCase() == "/list"){
+      socket.emit('annouce', {message : "<span class='serverMessage'>Active channels:" + Object.keys(io.sockets.manager.rooms).join('<br>').replace(/\//g, '') + "</span>"});
+      return;
+    }
+
+    if(res[0].toLowerCase() == "/join"){
+      if(res.length != 2) {
+        var help = "<span class='serverMessage'>Improper syntax, please use /join #channel.</span>";
+        socket.emit('annouce', {message : help});
+        return;
+      }
+      if(res[1][0] != "#") {
+        var help = "<span class='serverMessage'>Improper channel name, please use #channel.</span>";
+        socket.emit('annouce', {message : help});
+        return;
+      }
+      joinRoom(res[1]);
+      return;
+    }
+
+    if(res[0].toLowerCase() == "/leave"){
+      leaveRoom();
+      return;
+    }
+
     if(res[0].toLowerCase() == "/disconnect"){
       socket.disconnect();
+      return;
     }
 
     if(res[0].toLowerCase() == "/help"){
@@ -226,6 +254,37 @@ io.sockets.on('connection', function (socket) {
     data = '<span class="pm">&lt;to ' + dest + '&gt; ' + data + '</span';
     io.sockets.socket(findSocket(dest)).emit('broadcast', {client : name, message : data});
     socket.emit('pm', {client : name, message : data});
+  }
+
+  function joinRoom(data) {
+    var room = escapeHtml(data);
+    if(data.toLowerCase() == currentRoom.toLowerCase()) {
+      var help = "<span class='serverMessage'>You are already in " + currentRoom + "</span>";
+      socket.emit('annouce', {message : help});
+      return;
+    }
+    socket.leave(currentRoom);
+    io.sockets.in(currentRoom).emit('annouce', {message : "<span class='serverMessage'>" + name + " has left " + currentRoom + ".</span>"});
+    socket.emit('annouce', {message : "<span class='serverMessage'>" + name + " has left " + currentRoom + ".</span>"});
+    socket.join(room);
+    currentRoom = room;
+    socket.emit('channel', {channel : currentRoom});
+    io.sockets.in(currentRoom).emit('annouce', {message : "<span class='serverMessage'>" + name + " has entered " + currentRoom + ".</span>"});
+  }
+
+  function leaveRoom(data) {
+    if(currentRoom.toLowerCase() == '#chat.hardorange.org') {
+      var help = "<span class='serverMessage'>You cannot leave the default room (" + currentRoom + ")</span>";
+      socket.emit('annouce', {message : help});
+      return;
+    }
+    socket.leave(currentRoom);
+    io.sockets.in(currentRoom).emit('annouce', {message : "<span class='serverMessage'>" + name + " has left " + currentRoom + ".</span>"});
+    socket.emit('annouce', {message : "<span class='serverMessage'>" + name + " has left " + currentRoom + ".</span>"});
+    socket.join('#chat.hardorange.org');
+    currentRoom = '#chat.hardorange.org';
+    socket.emit('channel', {channel : currentRoom});
+    io.sockets.in(currentRoom).emit('annouce', {message : "<span class='serverMessage'>" + name + " has entered " + currentRoom + ".</span>"});
   }
 
   function updateName(data){
@@ -273,7 +332,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function sendHelp(){
-    var help = "<span class='serverMessage'>HardOrange IRC Help - Commands:<br>/nick nick<br>/pm nick message<br>/clear<br>/disconnect<br>/help</span>";
+    var help = "<span class='serverMessage'>HardOrange IRC Help - Commands:<br>/nick nick<br>/pm nick message<br>/list<br>/join #channel<br>/leave #channel<br>/clear<br>/disconnect<br>/help</span>";
     socket.emit('annouce', {message : help});
   }
 
@@ -338,7 +397,7 @@ io.sockets.on('connection', function (socket) {
         name = escapeHtml(data.name);
       }
     }
-    broadcast('<span class="serverMessage">' + name + ' has entered chat.</span>');
+    io.sockets.in(currentRoom).emit('annouce', {message : "<span class='serverMessage'>" + name + " has entered " + currentRoom + ".</span>"});
     users.push([name, socket.id, true]);
     io.sockets.emit('users', users);
     socket.emit('name', {name : name});
@@ -375,7 +434,7 @@ io.sockets.on('connection', function (socket) {
         parseServerCommand(data);
       } else {
         bbcode.parse(escapeHtml(data.message), function(content){
-          io.sockets.emit('broadcast', {client : name, message : content});
+          io.sockets.in(currentRoom).emit('broadcast', {client : name, message : content});
         });
       }
     });
@@ -394,7 +453,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('disconnect', function (data) {
       removeItem(users, [name, socket.id]);
       io.sockets.emit('users', users);
-      broadcast('<span class="serverMessage">' + name + ' has exited chat.</span>');
+      io.sockets.in(currentRoom).emit('annouce', {message : "<span class='serverMessage'>" + name + " has left " + currentRoom + ".</span>"});
     });
   });
 });
