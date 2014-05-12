@@ -120,11 +120,11 @@ function chat(source, data, forcename) {
   $('#history').scrollTop($('#history')[0].scrollHeight);
   if(!isActive){
     playSound(alert);
-    document.title = 'New Message!';
     if(data.toLowerCase().indexOf($(nickname).html().toLowerCase()) > -1){
       setTimeout(function(){playSound(alert);}, 6);
-      document.title = 'You have been mentioned!';
       if(source != 'SERVER'){
+        document.title = 'New Message!';
+        document.title = 'You have been mentioned!';
         notify('You have been mentioned by ' + source + '!', false);
       }
     }
