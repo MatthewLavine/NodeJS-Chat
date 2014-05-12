@@ -428,6 +428,10 @@ io.sockets.on('connection', function (socket) {
         rateLimitWarns++;
         if(rateLimitWarns == 3){
           banFrom = moment();
+          setTimeout(function(){
+            var help = "<span class='serverMessage'>30 second ban lifted, please behave.</span>";
+            socket.emit('annouce', {message : help});
+          }, 30000);
         }
         return;
       }
