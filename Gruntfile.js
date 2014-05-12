@@ -39,7 +39,8 @@ module.exports = function(grunt) {
       options: {
         "important": false,
         "box-model": false,
-        "known-properties": false
+        "known-properties": false,
+        "overqualified-elements":false
       }
     },
     watch: {
