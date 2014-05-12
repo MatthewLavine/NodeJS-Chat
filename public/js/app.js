@@ -213,7 +213,7 @@ function updateStatus(){
 
 function updateName(data){
   $(nickname).html(data.name);
-  $('.tab-bar-section').children('.title').html('HardOrange Chat - ' + data.name);
+  $('.tab-bar-section').children('.title').html($('.currentChannel').html() + ' - ' + $(nickname).html());
 }
 
 $('#saveNick').click(function(){
@@ -254,6 +254,11 @@ socket.on('annouce', function (data) {
 
 socket.on('users', function (data) {
   updateUsers(data);
+});
+
+socket.on('channel', function (data) {
+  $('.currentChannel').html(data.channel);
+  $('.tab-bar-section').children('.title').html($('.currentChannel').html() + ' - ' + $(nickname).html());
 });
 
 socket.on('name', function (data) {
