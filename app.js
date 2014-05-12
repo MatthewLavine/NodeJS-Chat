@@ -32,6 +32,9 @@ process.once('SIGUSR2', function () {
 function gracefulShutdown(kill){
   console.log( "\nShutting down from nodemon SIGUSR2 (RESTART) in 10 seconds..." );
   io.sockets.emit('annouce', {message : '<span class="adminMessage">RESTARTING IN 10 SECONDS!</span>'});
+  setTimeout(function(){
+    io.sockets.emit('annouce', {message : '<span class="adminMessage">RESTARTING IN 5 SECONDS!</span>'});
+  }, 5000);
   setTimeout(function(){kill()}, 10000);
 }
 
