@@ -79,7 +79,7 @@ function makeFancy(str){
 }
 
 function chat(source, data, forcename) {
-  var time = moment().format('HH:mm');
+  var time = moment().format('HH:mm:ss');
   var newSource;
   if(forcename === undefined && (source == lastUser && lastUserMsgCount < 15)){
     lastUserMsgCount++;
