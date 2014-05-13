@@ -328,17 +328,23 @@ function playSound(sound){
   }
 }
 
-$('#toggleSounds').click(function(){
+$('#toggleSounds').click(function(){toggleSounds();});
+
+function toggleSounds() {
   if(sounds){
     sounds = false;
+    $.removeCookie('sounds');
     $('#toggleSounds').html('Enable Message Sounds');
   } else {
     sounds = true;
+    $.cookie('sounds', true, { expires: 365 });
     $('#toggleSounds').html('Disable Message Sounds');
-    var alert = new Audio('sounds/alert.mp3');
-    playSound(alert);
   }
-});
+}
+
+if($.cookie('sounds') !== undefined){
+  toggleSounds();
+}
 
 var swipeleft = Hammer(document.body).on("swiperight", function(ev) {
   $(".off-canvas-wrap").addClass("move-right");
