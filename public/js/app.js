@@ -203,6 +203,9 @@ function sendMessage(){
   } else {
     if(!$('#chatBox').hasClass("error")){
       $('#chatBox').addClass("error");
+      setTimeout(function(){
+        $('#chatBox').removeClass("error");
+      }, 5000);
     }
   }
 }
