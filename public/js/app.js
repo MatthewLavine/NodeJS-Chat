@@ -200,6 +200,7 @@ function sendMessage(){
       socket.emit('broadcast', {message: '' + document.getElementById("chatBox").value});
     }
     document.getElementById("chatBox").value = "";
+    return;
   } else {
     if(!$('#chatBox').hasClass("error")){
       $('#chatBox').addClass("error");
