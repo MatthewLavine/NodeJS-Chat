@@ -10,7 +10,7 @@ var url = require('url');
 var bbcode = require('bbcode');
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
-var sys = require('sys')
+var sys = require('sys');
 var exec = require('child_process').exec;
 
 app.set("view options", {layout: false});
