@@ -222,6 +222,7 @@ $('#saveNick').click(function(){
 });
 
 socket.on('connect', function(data){
+  $('#chatBox').removeClass("error");
   if($.cookie('nick') !== undefined){
     socket.emit('config', {name: $.cookie('nick')});
   } else {
