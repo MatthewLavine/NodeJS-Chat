@@ -1,5 +1,7 @@
 body {
 	background: #FAFAFA;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
 }
 
 .row {
@@ -11,14 +13,12 @@ body {
 }
 
 .serverMessage {
-	font-weight: bold;
-	font-style: italic;
+	font-weight: 700;
 	color: #A6E22E !important;
 }
 
 .adminMessage {
-	font-weight: bold;
-	font-style: italic;
+	font-weight: 700;
 	color: #FF0500;
 }
 
@@ -42,6 +42,7 @@ body {
 
 .pm {
 	color: #AE81FF;
+	font-style: italic;
 }
 
 .noList {
