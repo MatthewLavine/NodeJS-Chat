@@ -217,7 +217,7 @@ function updateStatus(){
 
 function updateName(data){
   $(nickname).html(data.name);
-  $('.tab-bar-section').children('.title').html($('.currentChannel').html() + '<div class="show-for-large-up" style="display:inline-block !important;"> - ' + $(nickname).html() + '</div>');
+  $('.tab-bar-section').children('.title').html($('.currentChannel').html() + '<div class="show-for-large-up" style="display:inline-block !important;">&nbsp;- ' + $(nickname).html() + '</div>');
 }
 
 $('#saveNick').click(function(){
@@ -263,7 +263,7 @@ socket.on('users', function (data) {
 
 socket.on('channel', function (data) {
   $('.currentChannel').html(data.channel);
-  $('.tab-bar-section').children('.title').html($('.currentChannel').html() + '<div class="show-for-large-up" style="display:inline-block !important;"> - ' + $(nickname).html() + '</div>');
+  $('.tab-bar-section').children('.title').html($('.currentChannel').html() + '<div class="show-for-large-up" style="display:inline-block !important;">&nbsp;- ' + $(nickname).html() + '</div>');
 });
 
 socket.on('name', function (data) {
