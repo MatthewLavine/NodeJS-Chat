@@ -217,7 +217,7 @@ function updateStatus(){
 
 function updateName(data){
   $(nickname).html(data.name);
-  $('.tab-bar-section').children('.title').html($('.currentChannel').html() + ' - ' + $(nickname).html());
+  $('.tab-bar-section').children('.title').html($('.currentChannel').html() + '<div class="show-for-large-up" style="display:inline-block !important;"> - ' + $(nickname).html() + '</div>');
 }
 
 $('#saveNick').click(function(){
