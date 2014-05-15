@@ -263,7 +263,7 @@ socket.on('users', function (data) {
 
 socket.on('channel', function (data) {
   $('.currentChannel').html(data.channel);
-  $('.tab-bar-section').children('.title').html($('.currentChannel').html() + ' - ' + $(nickname).html());
+  $('.tab-bar-section').children('.title').html($('.currentChannel').html() + '<div class="show-for-large-up" style="display:inline-block !important;"> - ' + $(nickname).html() + '</div>');
 });
 
 socket.on('name', function (data) {
