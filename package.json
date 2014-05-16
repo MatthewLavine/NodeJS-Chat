@@ -10,6 +10,7 @@
     "bbcode" : "0.1.x",
     "grunt" : "0.4.x",
     "moment" : "2.4.0",
+    "util" : "latest",
     "grunt-contrib-uglify" : "latest",
     "grunt-contrib-jshint" : "latest",
     "grunt-contrib-watch" : "latest",
