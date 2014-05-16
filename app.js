@@ -7,6 +7,7 @@ var server = app.listen(port);
 var moment = require('moment');
 var ejs = require('ejs');
 var url = require('url');
+var util = require('util');
 var bbcode = require('bbcode');
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
@@ -18,7 +19,7 @@ app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
 process.on('SIGINT', function() {
-  console.log( "\nShutting down from manual SIGINT (Ctrl-C), NOW." );
+  util.log( "\nShutting down from manual SIGINT (Ctrl-C), NOW." );
   io.sockets.emit('annouce', {message : '<span class="adminMessage">SHUTTING DOWN, NOW!</span>'});
   process.exit();
 });
@@ -30,7 +31,7 @@ process.once('SIGUSR2', function () {
 });
 
 function gracefulShutdown(kill){
-  console.log( "\nShutting down from nodemon SIGUSR2 (RESTART) in 10 seconds..." );
+  util.log( "\nShutting down from nodemon SIGUSR2 (RESTART) in 10 seconds..." );
   io.sockets.emit('annouce', {message : '<span class="adminMessage">RESTARTING IN 10 SECONDS!</span>'});
   setTimeout(function(){
     io.sockets.emit('annouce', {message : '<span class="adminMessage">RESTARTING IN 5 SECONDS!</span>'});
@@ -41,7 +42,7 @@ function gracefulShutdown(kill){
 app.post('/gitpull', function(req, res) {
   var parsedUrl = url.parse(req.url, true);
   if(parsedUrl.query['secret_key'] != config.secret_key) {
-      console.log("[warning] Unauthorized request " + req.url);
+      util.log("[warning] Unauthorized request " + req.url);
       res.writeHead(401, "Not Authorized", {'Content-Type': 'text/html'});
       res.end('401 - Not Authorized');
       return;
@@ -106,19 +107,19 @@ function parseAdminCommand(data) {
     }
 
     if(res[0].toLowerCase() == "/shutdown" && res.length == 1){
-      console.log( "\nShutting down from manual SIGINT (/shutdown), NOW." );
+      util.log( "\nShutting down from manual SIGINT (/shutdown), NOW." );
       io.sockets.emit('annouce', {message : '<span class="adminMessage">SHUTTING DOWN, NOW!</span>'});
       process.exit();
       return;
     }
 
-    console.log('Unknown command \'' + data + '\'');
-    console.log('Available commands are: \n  /kick user reason\n  message\n  /restart\n  /shutdown\n');
+    util.log('Unknown command \'' + data + '\'');
+    util.log('Available commands are: \n  /kick user reason\n  message\n  /restart\n  /shutdown\n');
 }
 
 function kick(data, reason) {
   if(!findUser(data)) {
-    console.log('No such user \'' + data + '\'');
+    util.log('No such user \'' + data + '\'');
     return;
   }
   var victim = io.sockets.socket(findSocket(data));
@@ -130,7 +131,7 @@ function kick(data, reason) {
   victim.emit('annouce', {message : msg});
   removeItem(users, [data]);
   victim.disconnect();
-  console.log('\'' + data + '\' has been kicked.');
+  util.log('\'' + data + '\' has been kicked.');
 }
 
 
@@ -364,7 +365,7 @@ io.sockets.on('connection', function (socket) {
         didConfig = true;
     }
     if(data === undefined || data === null || data.name === undefined || data.name === null){
-      console.log('Malformed Config Packet');
+      util.log('Malformed Config Packet');
       return;
     }
     do {
@@ -409,7 +410,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('broadcast', function (data) {
       if(data === undefined || data === null || data.message === undefined || data.message === null || typeof data.message != 'string'){
-        console.log('Malformed Broadcast Packet');
+        util.log('Malformed Broadcast Packet');
         return;
       }
       if(data.message.length > 500) {
@@ -448,11 +449,11 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('status', function (data) {
       if(data === undefined || data === null || data.status === undefined || data.status === null){
-        console.log('Malformed Status Packet');
+        util.log('Malformed Status Packet');
         return;
       }
       var index = multiArrayIndex(users, [name, socket.id, !data.status]);
-      if(index == -1){console.log('missing user: ' + name);return;}
+      if(index == -1){util.log('missing user: ' + name);return;}
       users[index][2] = data.status;
       io.sockets.emit('users', users);
     });
