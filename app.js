@@ -16,7 +16,10 @@ var exec = require('child_process').exec;
 
 app.set("view options", {layout: false});
 app.use(express.json());
-app.use(express.static(__dirname + '/public'));
+
+var oneWeek = 604800;
+app.use(express.compress());
+app.use(express.static(__dirname + '/public', { maxAge: oneWeek }));
 
 process.on('SIGINT', function() {
   util.log( "\nShutting down from manual SIGINT (Ctrl-C), NOW." );
