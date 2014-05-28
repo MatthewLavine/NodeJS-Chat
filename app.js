@@ -174,6 +174,12 @@ io.sockets.on('connection', function (socket) {
   var name = '';
   var lastMessage = moment();
   var rateLimitWarns = 0;
+  var floodTimer = moment();
+  var floodMessages = 0;
+  setInterval(function(){
+    floodTimer = moment;
+    floodMessages = 0;
+  },5000);     
   var banFrom = moment();
   var currentRoom = '#chat.hardorange.org';
   socket.join(currentRoom);
@@ -448,7 +454,17 @@ io.sockets.on('connection', function (socket) {
         socket.emit('annouce', {message : help});
         return;
       }
-      if(moment().diff(lastMessage) < 400) {
+      
+      function floodGuard() {
+        var floodLimit = 7;
+        floodMessages++;
+        if (floodMessages >= floodLimit) {
+          return true;
+        }
+        return false;
+      }
+
+      if(moment().diff(lastMessage) < 400 || floodGuard()) {
         var help = "<span class='serverMessage'>You are sending too many messages!</span>";
         socket.emit('annouce', {message : help});
         rateLimitWarns++;
