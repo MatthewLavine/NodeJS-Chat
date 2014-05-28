@@ -448,7 +448,7 @@ io.sockets.on('connection', function (socket) {
         socket.emit('annouce', {message : help});
         return;
       }
-      if(moment().diff(lastMessage, 'seconds') < 0.5) {
+      if(moment().diff(lastMessage) < 400) {
         var help = "<span class='serverMessage'>You are sending too many messages!</span>";
         socket.emit('annouce', {message : help});
         rateLimitWarns++;
