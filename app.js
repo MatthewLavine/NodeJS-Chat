@@ -282,7 +282,7 @@ io.sockets.on('connection', function (socket) {
       for(var client in clients){
         usersInChannel += '<br>' + parseUser(clients[client].id);
       }
-      socket.emit('annouce', {message : "<span class='serverMessage'>Users in current channel:" + usersInChannel.replace(/\//g, '') + "</span>"});
+      socket.emit('annouce', {message : "<span class='serverMessage'>Users in " + currentRoom + ":" + usersInChannel.replace(/\//g, '') + "</span>"});
   }
 
   function joinRoom(data) {
