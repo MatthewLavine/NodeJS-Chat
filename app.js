@@ -213,8 +213,13 @@ io.sockets.on('connection', function (socket) {
       }
     }
 
-    if(res[0].toLowerCase() == "/list"){
+    if(res[0].toLowerCase() == "/channels"){
       socket.emit('annouce', {message : "<span class='serverMessage'>Active channels:" + Object.keys(io.sockets.manager.rooms).join('<br>').replace(/\//g, '') + "</span>"});
+      return;
+    }
+
+    if(res[0].toLowerCase() == "/users"){
+      getChannelUsers();
       return;
     }
 
@@ -261,6 +266,23 @@ io.sockets.on('connection', function (socket) {
     data = '<span class="pm">&lt;to ' + dest + '&gt; ' + data + '</span>';
     io.sockets.socket(findSocket(dest)).emit('broadcast', {client : name, message : data});
     socket.emit('pm', {client : name, message : data});
+  }
+
+  function parseUser(data) {
+    for(user in users) {
+      if(users[user][1] == data) {
+        return users[user][0];
+      }
+    }
+  }
+
+  function getChannelUsers() {
+      var usersInChannel = '';
+      var clients = io.sockets.clients(currentRoom);
+      for(var client in clients){
+        usersInChannel += '<br>' + parseUser(clients[client].id);
+      }
+      socket.emit('annouce', {message : "<span class='serverMessage'>Users in current channel:" + usersInChannel.replace(/\//g, '') + "</span>"});
   }
 
   function joinRoom(data) {
@@ -339,7 +361,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function sendHelp(){
-    var help = "<span class='serverMessage'>HardOrange Chat Help - Commands:<br>/nick nick<br>/pm nick message<br>/list<br>/join #channel<br>/leave<br>/clear<br>/disconnect<br>/help</span>";
+    var help = "<span class='serverMessage'>HardOrange Chat Help - Commands:<br>/nick nick<br>/pm nick message<br>/channels<br>/users (in current channel)<br>/join #channel<br>/leave<br>/clear<br>/disconnect<br>/help</span>";
     socket.emit('annouce', {message : help});
   }
 
