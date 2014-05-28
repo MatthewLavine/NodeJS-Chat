@@ -3,6 +3,8 @@ NodeJS-Chat
 
 NodeJS based chat App
 
+Live Demo: http://chat.hardorange.org/
+
 To run:
 - Clone repo
 - Run npm install
