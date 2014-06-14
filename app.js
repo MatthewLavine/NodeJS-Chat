@@ -211,10 +211,12 @@ io.sockets.on('connection', function (socket) {
         } else {
           var help = "<span class='serverMessage'>User not found for command '" + res.join(' ') + "'</span>";
           socket.emit('annouce', {message : help});
+          return;
         }
       } else {
           var help = "<span class='serverMessage'>You must add a PM message.</span>";
           socket.emit('annouce', {message : help});
+          return;
       }
     }
 
