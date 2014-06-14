@@ -175,6 +175,8 @@ io.sockets.on('connection', function (socket) {
   var rateLimitWarns = 0;
   var floodTimer = moment();
   var floodMessages = 0;
+  var baseBan = 30; // seconds
+  var banExponent = 0;
   setInterval(function(){
     floodTimer = moment;
     floodMessages = 0;
@@ -449,8 +451,8 @@ io.sockets.on('connection', function (socket) {
         socket.emit('annouce', {message : help});
         return;
       }
-      if(moment().diff(banFrom, 'seconds') <= 30 && rateLimitWarns == 3){
-        var help = "<span class='serverMessage'>You are sending too many messages, 30 second ban!</span>";
+      if(moment().diff(banFrom, 'seconds') <= baseBan*Math.pow(2, banExponent) && rateLimitWarns == 3){
+        var help = "<span class='serverMessage'>You are sending too many messages, " + baseBan*Math.pow(2, banExponent) + " second ban!</span>";
         socket.emit('annouce', {message : help});
         return;
       }
@@ -471,14 +473,15 @@ io.sockets.on('connection', function (socket) {
         if(rateLimitWarns == 3){
           banFrom = moment();
           setTimeout(function(){
-            var help = "<span class='serverMessage'>30 second ban lifted, please behave.</span>";
+            var help = "<span class='serverMessage'>" + baseBan*Math.pow(2, banExponent) + " second ban lifted, please behave.</span>";
             socket.emit('annouce', {message : help});
-          }, 30000);
+            banExponent++;
+            rateLimitWarns=0;
+          }, baseBan*Math.pow(2, banExponent)*1000);
         }
         return;
       }
       lastMessage = moment();
-      rateLimitWarns=0;
       if(data.message[0] == "/") {
         parseServerCommand(data);
       } else {
