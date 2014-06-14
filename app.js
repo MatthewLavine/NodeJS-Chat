@@ -143,12 +143,11 @@ var entityMap = {
   "<": "&lt;",
   ">": "&gt;",
   '"': '&quot;',
-  "'": '&#39;',
-  "/": '&#x2F;'
+  "'": '&#39;'
 };
 
 function escapeHtml(string) {
-  return String(string).replace(/[&<>"'\/]/g, function (s) {
+  return String(string).replace(/[&<>"']/g, function (s) {
     return entityMap[s];
   });
 }
