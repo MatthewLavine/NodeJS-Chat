@@ -1,7 +1,7 @@
 $(document).foundation();
 
 var users = [];
-var socket = io.connect('http://' + ip);
+var socket = io.connect('http://' + document.domain);
 var isActive = true;
 var modalOpen = false;
 var sounds = false;
