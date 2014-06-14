@@ -214,7 +214,7 @@ io.sockets.on('connection', function (socket) {
           return;
         }
       } else {
-          var help = "<span class='serverMessage'>You must add a PM message.</span>";
+          var help = "<span class='serverMessage'>Invalid syntax, please use '/pm nick message'.</span>";
           socket.emit('annouce', {message : help});
           return;
       }
@@ -261,7 +261,6 @@ io.sockets.on('connection', function (socket) {
     }
 
     unrecognized(res[0]);
-    sendHelp();
   }
 
   function pm(dest, data){
@@ -363,7 +362,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function unrecognized(data){
-    var help = "<span class='serverMessage'>Unknown command '" + data + "'.</span>";
+    var help = "<span class='serverMessage'>Unknown command '" + data + "'.<br>For a complete list of commands, type '/help'.</span>";
     socket.emit('annouce', {message : help});
   }
 
