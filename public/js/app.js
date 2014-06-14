@@ -96,6 +96,9 @@ function chat(source, data, forcename) {
     newSource = '<span class="serverMessage">' + newSource + '</span>';
   }
   data = makeFancy(data);
+  if(source == $(nickname).html()) {
+    data = "<span class='selfMessage'>" + data + "</span>";
+  }
   $('#history').append(' \
     <div class="row"> \
       <div class="large-1 columns show-for-large-up right-seperator" style="padding:0"> \
