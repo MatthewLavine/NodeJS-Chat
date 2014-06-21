@@ -120,7 +120,7 @@ function chat(source, data, forcename) {
   var height = $('.chatMessage').last().height();
   $('.chatName').last().css( {"height" : height});
   $('.chatTime').last().css( {"height" : height});
-  $('#history').animate({scrollTop : $('#history')[0].scrollHeight},'slow');
+  $('#history').scrollTop($('#history')[0].scrollHeight);
   if(!isActive && source != 'SERVER'){
     playSound(alert);
     document.title = 'New Message!';
