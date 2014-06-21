@@ -43,7 +43,7 @@ window.onblur = function () {
 function checkInput(){
   var val = document.getElementById("chatBox").value;
   if(val.substr(0,5) == "/nick"){
-    document.getElementById("chatBox").value = val.substr(0,25);
+    document.getElementById("chatBox").value = val.substr(0,40);
   }
 }
 
@@ -120,7 +120,7 @@ function chat(source, data, forcename) {
   var height = $('.chatMessage').last().height();
   $('.chatName').last().css( {"height" : height});
   $('.chatTime').last().css( {"height" : height});
-  $('#history').scrollTop($('#history')[0].scrollHeight);
+  $('#history').animate({scrollTop : $('#history')[0].scrollHeight},'slow');
   if(!isActive && source != 'SERVER'){
     playSound(alert);
     document.title = 'New Message!';
