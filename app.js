@@ -6,7 +6,9 @@ var server = app.listen(port);
 var moment = require('moment');
 var url = require('url');
 var util = require('util');
+var crypto = require('crypto');
 var bbcode = require('bbcode');
+var _ = require('underscore');
 var io = require('socket.io').listen(server);
 io.set('log level', 1);
 var sys = require('sys');
@@ -66,6 +68,7 @@ app.get('*', function(req, res) {
 });
 
 var users = [];
+var registered_users = [];
 
 process.stdin.resume();
 process.stdin.setEncoding('utf8');
@@ -189,8 +192,22 @@ io.sockets.on('connection', function (socket) {
     var res = data.message.trim().split(" ");
 
     if(res[0].toLowerCase() == "/nick"){
-      updateName(res.slice(1,res.length).join(' '));
+      var password = "-1";
+      if(res[2])
+        password = res[2];
+      updateName(res[1], password);
       return;
+    }
+
+    if(res[0].toLowerCase() == "/register"){
+      if(res.length != 2) {
+          var help = "<span class='serverMessage'>Invalid syntax, please use '/register password'.</span>";
+          socket.emit('annouce', {message : help});
+          return;
+      } else {
+        register(res[1]);
+        return;
+      }
     }
 
     if(res[0].toLowerCase() == "/pm"){
@@ -272,6 +289,23 @@ io.sockets.on('connection', function (socket) {
     socket.emit('pm', {client : name, message : data});
   }
 
+  function register(password){
+    if(_.where(registered_users, {"name" : name}).length > 0) {
+      var help = "<span class='serverMessage'>That nick is already registered!</span>";
+      socket.emit('annouce', {message : help});
+      return;
+    } else {
+      registered_users.push({"name" : name, "password" : shaString(password)});
+      var help = "<span class='serverMessage'>Your nick has been registered!</span>";
+      socket.emit('annouce', {message : help});
+      return;
+    }
+  }
+
+  function shaString(plaintext){
+    return crypto.createHash('sha256').update(plaintext).digest("hex");
+  }
+
   function parseUser(data) {
     for(user in users) {
       if(users[user][1] == data) {
@@ -320,7 +354,18 @@ io.sockets.on('connection', function (socket) {
     io.sockets.in(currentRoom).emit('annouce', {message : "<span class='serverMessage'>" + name + " has entered " + currentRoom + ".</span>"});
   }
 
-  function updateName(data){
+  function checkRegistered(nick, password) {
+    var user = _.where(registered_users, {"name" : nick});
+    if(user.length > 0) {
+      if(user[0].password == shaString(password)){
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  function updateName(data, password){
     data = escapeHtml(data).trim();
     if(typeof data != 'string') {
       socket.emit('annouce', {message : "<span class='serverMessage'>That nick is not a string!</span>"});
@@ -336,6 +381,10 @@ io.sockets.on('connection', function (socket) {
     }
     if(data.toLowerCase() == "admin" || data.toLowerCase() == "server"){
       socket.emit('annouce', {message : "<span class='serverMessage'>That nick is reserved!</span>"});
+      return;
+    }
+    if(checkRegistered(data, password)) {
+      socket.emit('annouce', {message : "<span class='serverMessage'>That nick is registered by someone else!<br>If you registered this nick, please use '/nick nick password'.</span>"});
       return;
     }
     if(data.toLowerCase().length > 25){
@@ -365,7 +414,7 @@ io.sockets.on('connection', function (socket) {
   }
 
   function sendHelp(){
-    var help = "<span class='serverMessage'>HardOrange Chat Help - Commands:<br>/nick nick<br>/pm nick message<br>/channels<br>/users (in current channel)<br>/join #channel<br>/leave<br>/clear<br>/disconnect<br>/help</span>";
+    var help = "<span class='serverMessage'>HardOrange Chat Help - Commands:<br>/nick nick<br>/register password<br>/pm nick message<br>/channels<br>/users (in current channel)<br>/join #channel<br>/leave<br>/clear<br>/disconnect<br>/help</span>";
     socket.emit('annouce', {message : help});
   }
 
@@ -412,6 +461,10 @@ io.sockets.on('connection', function (socket) {
       }
       if(!error && data.name.toLowerCase() == "admin" || data.name.toLowerCase() == "server"){
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is reserved!</span>"});
+        error = true;
+      }
+      if(!error && checkRegistered(data.name, data.password = '-1')) {
+        socket.emit('annouce', {message : "<span class='serverMessage'>That nick is registered by someone else!<br>If you registered this nick, please use '/nick nick password'.</span>"});
         error = true;
       }
       if(!error && data.name.toLowerCase().length > 25){
