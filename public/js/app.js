@@ -205,6 +205,7 @@ function sendMessage(){
         var arr = val.split(" ");
         arr[1] = CryptoJS.SHA1(arr[1]);
         $.cookie('pass', arr[1], { expires: 365 });
+        $.cookie('nick', $(nickname).html(), { expires: 365 });
         arr = arr.join(" ");
         document.getElementById("chatBox").value = arr;
       }
