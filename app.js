@@ -193,6 +193,11 @@ io.sockets.on('connection', function (socket) {
 
     if(res[0].toLowerCase() == "/nick"){
       var password = "-1";
+      if(!res[1]) {
+          var help = "<span class='serverMessage'>Invalid syntax, please use '/nick nick'.</span>";
+          socket.emit('annouce', {message : help});
+          return;
+      }
       if(res[2])
         password = res[2];
       updateName(res[1], password);
@@ -295,15 +300,11 @@ io.sockets.on('connection', function (socket) {
       socket.emit('annouce', {message : help});
       return;
     } else {
-      registered_users.push({"name" : name, "password" : shaString(password)});
+      registered_users.push({"name" : name, "password" : password});
       var help = "<span class='serverMessage'>Your nick has been registered!</span>";
       socket.emit('annouce', {message : help});
       return;
     }
-  }
-
-  function shaString(plaintext){
-    return crypto.createHash('sha256').update(plaintext).digest("hex");
   }
 
   function parseUser(data) {
@@ -357,7 +358,7 @@ io.sockets.on('connection', function (socket) {
   function checkRegistered(nick, password) {
     var user = _.where(registered_users, {"name" : nick});
     if(user.length > 0) {
-      if(user[0].password == shaString(password)){
+      if(user[0].password == password){
         return false;
       }
       return true;
@@ -463,7 +464,11 @@ io.sockets.on('connection', function (socket) {
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is reserved!</span>"});
         error = true;
       }
-      if(!error && checkRegistered(data.name, data.password = '-1')) {
+      if(!error && data.password != undefined && checkRegistered(data.name, data.password)) {
+        socket.emit('annouce', {message : "<span class='serverMessage'>That nick is registered by someone else!<br>If you registered this nick, please use '/nick nick password'.</span>"});
+        error = true;
+      }
+      if(!error && data.password == undefined && checkRegistered(data.name, data.password = "-1")) {
         socket.emit('annouce', {message : "<span class='serverMessage'>That nick is registered by someone else!<br>If you registered this nick, please use '/nick nick password'.</span>"});
         error = true;
       }

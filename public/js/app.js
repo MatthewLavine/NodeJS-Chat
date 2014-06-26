@@ -42,7 +42,7 @@ window.onblur = function () {
 
 function checkInput(){
   var val = document.getElementById("chatBox").value;
-  if(val.substr(0,5) == "/nick"){
+  if(val.substr(0,5) == "/nick") {
     document.getElementById("chatBox").value = val.substr(0,40);
   }
 }
@@ -200,6 +200,23 @@ function sendMessage(){
     if(document.getElementById("chatBox").value.trim() == "/clear") {
       clearLog();
     } else {
+      var val = document.getElementById("chatBox").value;
+      if(val.substr(0,9) == "/register") {
+        var arr = val.split(" ");
+        arr[1] = CryptoJS.SHA1(arr[1]);
+        $.cookie('pass', arr[1], { expires: 365 });
+        arr = arr.join(" ");
+        document.getElementById("chatBox").value = arr;
+      }
+      if(val.substr(0,5) == "/nick") {
+        var narr = val.split(" ");
+        if(narr.length > 2) {
+          narr[2] = CryptoJS.SHA1(narr[2]);
+        $.cookie('pass', narr[2], { expires: 365 });
+          narr = narr.join(" ");
+          document.getElementById("chatBox").value = narr;
+        }
+      }
       socket.emit('broadcast', {message: '' + document.getElementById("chatBox").value});
     }
     document.getElementById("chatBox").value = "";
@@ -230,7 +247,9 @@ $('#saveNick').click(function(){
 
 socket.on('connect', function(data){
   $('#chatBox').removeClass("error");
-  if($.cookie('nick') !== undefined){
+  if($.cookie('nick') !== undefined && $.cookie('pass') !== undefined){
+    socket.emit('config', {name: $.cookie('nick'), password : $.cookie('pass')});
+  } else if($.cookie('nick') !== undefined){
     socket.emit('config', {name: $.cookie('nick')});
   } else {
     socket.emit('config', {name: ''}); //Request Guest Identifier
