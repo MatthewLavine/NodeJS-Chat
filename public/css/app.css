@@ -138,7 +138,7 @@ a {
 }
 
 .chatBox {
-	color: black;
+	color: black !important;
 	height: 50px;
 	max-height: 200px;
 	max-width: 100%;
