@@ -61,7 +61,7 @@ function saveNick(){
   sendMessage();
   $('#changeNick').foundation('reveal', 'close');
 }
-
+/*
 function makeFancy(str){
   var tempStr = str;
     while(tempStr.indexOf("*") !== -1) {
@@ -77,7 +77,7 @@ function makeFancy(str){
     }
     return tempStr;
 }
-
+*/
 function chat(source, data, forcename) {
   var time = moment().format('HH:mm:ss');
   var newSource;
@@ -95,7 +95,7 @@ function chat(source, data, forcename) {
   if(newSource == 'SERVER'){
     newSource = '<span class="serverMessage">' + newSource + '</span>';
   }
-  data = makeFancy(data);
+  //data = makeFancy(data);
   if(source == $(nickname).html()) {
     data = "<span class='selfMessage'>" + data + "</span>";
   }
