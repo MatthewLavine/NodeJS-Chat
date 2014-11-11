@@ -63,8 +63,12 @@ app.post('/gitpull', function(req, res) {
   }
 });
 
-app.get('*', function(req, res) {
+app.get('/', function(req, res) {
   res.render('index.html');
+});
+
+app.get('*', function(req, res) {
+  res.redirect('/');
 });
 
 var users = [];
