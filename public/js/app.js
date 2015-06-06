@@ -18,7 +18,7 @@ $(document).ready(function () {
 
 function updateContainer() {
   var $containerHeight = $(window).height();
-  $('.chatLog').animate({
+  $('.chatLog').stop(true, true).animate({
     height: $(window).height() - 125
   }, 1000, function(){
     $('#history').scrollTop($('#history')[0].scrollHeight);
