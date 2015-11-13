@@ -3,7 +3,7 @@ NodeJS-Chat
 
 NodeJS based chat App
 
-Live Demo: http://chat.hardorange.org/
+Live Demo: https://hardorange-chat.herokuapp.com/
 
 To run:
 - Clone repo
